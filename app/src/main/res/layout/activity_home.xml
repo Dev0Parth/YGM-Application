@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/_20sdp"
+    android:paddingStart="@dimen/_20sdp"
+    android:paddingEnd="@dimen/_20sdp"
+    android:paddingTop="@dimen/_20sdp"
     tools:context=".activities.HomeActivity">
 
     <LinearLayout
@@ -35,6 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:background="@drawable/edittext_background"
                 android:inputType="text"
@@ -42,193 +45,48 @@
                 android:textColor="@color/primary"
                 android:textSize="@dimen/_16ssp" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/presentCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_20sdp"
-                android:text="@string/present" />
-
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/leaveCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/leave"
-                tools:ignore="RelativeOverlap" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:visibility="gone"
-            android:orientation="vertical">
-
             <TextView
-                android:id="@+id/workTextView"
+                android:id="@+id/dateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_25sdp"
-                android:text="@string/work_done"
+                android:text="Date"
                 android:textColor="@color/dimgray"
                 android:textSize="@dimen/_12ssp" />
 
             <EditText
-                android:id="@+id/workEditText"
+                android:id="@+id/dateEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:background="@drawable/edittext_background"
-                android:gravity="top|start"
-                android:inputType="textMultiLine"
-                android:maxLines="10"
-                android:minLines="8"
+                android:inputType="text"
                 android:padding="@dimen/_10sdp"
                 android:textColor="@color/primary"
                 android:textSize="@dimen/_16ssp" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:background="@drawable/edittext_background"
-            android:gravity="center"
-            android:visibility="gone"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/halfLeaveCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_20sdp"
-                android:text="@string/half_leave" />
-
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/fullLeaveCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/full_leave"
-                tools:ignore="RelativeOverlap" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/linearLayout5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:background="@drawable/edittext_background"
-            android:gravity="center"
-            android:visibility="gone"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/firstHalfCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_20sdp"
-                android:text="First Half" />
-
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/secondHalfCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Second Half" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/linearLayout6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:visibility="gone"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/leaveReasonTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_25sdp"
-                android:text="@string/reason_of_leave"
-                android:textColor="@color/dimgray"
-                android:textSize="@dimen/_12ssp" />
-
-            <EditText
-                android:id="@+id/leaveReasonEditText"
+            <DatePicker
+                android:id="@+id/date_picker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/edittext_background"
-                android:gravity="top|start"
-                android:inputType="textMultiLine"
-                android:maxLines="10"
-                android:minLines="8"
-                android:padding="@dimen/_10sdp"
-                android:textColor="@color/primary"
-                android:textSize="@dimen/_16ssp" />
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:calendarViewShown="true"
+                android:datePickerMode="calendar" />
 
         </LinearLayout>
 
-
-        <LinearLayout
-            android:id="@+id/linearLayout7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/halfWorkTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_25sdp"
-                android:text="@string/work_done"
-                android:textColor="@color/dimgray"
-                android:textSize="@dimen/_12ssp" />
-
-            <EditText
-                android:id="@+id/halfWorkEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/edittext_background"
-                android:gravity="top|start"
-                android:inputType="textMultiLine"
-                android:maxLines="10"
-                android:minLines="8"
-                android:padding="@dimen/_10sdp"
-                android:textColor="@color/primary"
-                android:textSize="@dimen/_16ssp" />
-
-        </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/submitBtn"
+            android:id="@+id/nextBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:background="@color/lightgray"
-            android:clickable="false"
-            android:text="@string/submit"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/primary"
+            android:text="Next"
+            android:theme="@style/interMedium"
             android:textColor="@color/white" />
 
     </LinearLayout>

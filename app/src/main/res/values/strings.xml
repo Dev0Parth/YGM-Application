@@ -15,4 +15,7 @@
     <string name="login_here_to_access_your_account">Login here to access your account.</string>
     <string name="welcome_to_ygm">Welcome to YGM</string>
     <string name="login">Login</string>
+    <string name="select_an_option">Select an option:</string>
+    <string name="second_half">Second Half</string>
+    <string name="first_half">First Half</string>
 </resources>
