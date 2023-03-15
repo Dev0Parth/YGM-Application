@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">YGM</string>
+    <string name="full_name">Full Name</string>
+    <string name="leave">Leave</string>
+    <string name="present">Present</string>
+    <string name="work_done">Work Done</string>
+    <string name="half_leave">Half Leave</string>
+    <string name="full_leave">Full Leave</string>
+    <string name="submit">Submit</string>
+    <string name="reason_of_leave">Reason of Leave</string>
+    <string name="data_added_successfully">Data Added Successfully</string>
+    <string name="ygm">YGM</string>
+    <string name="email_or_phone">Email or Phone</string>
+    <string name="your_password">Your password</string>
+    <string name="login_here_to_access_your_account">Login here to access your account.</string>
+    <string name="welcome_to_ygm">Welcome to YGM</string>
+    <string name="login">Login</string>
+</resources>

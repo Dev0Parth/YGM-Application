@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="libreRegular">
+        <item name="android:fontFamily">@font/librebaskervilleregular</item>
+    </style>
+
+    <style name="libreBold">
+        <item name="android:fontFamily">@font/librebaskervillebold</item>
+    </style>
+
+    <style name="interRegular">
+        <item name="android:fontFamily">@font/inter_regular</item>
+    </style>
+
+    <style name="interMedium">
+        <item name="android:fontFamily">@font/inter_medium</item>
+    </style>
+
+    <style name="interBold">
+        <item name="android:fontFamily">@font/inter_bold</item>
+    </style>
+
+</resources>
