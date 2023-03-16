@@ -1,5 +1,6 @@
 package com.parth.ygm.utilities;
 
+import com.parth.ygm.models.GetCode;
 import com.parth.ygm.models.User;
 
 import okhttp3.ResponseBody;
@@ -14,12 +15,13 @@ public interface API {
     @POST("getEmployeeData.php")
     Call<ResponseBody> submitData(
             @Field("fullName") String fullName,
+            @Field("date") String date,
             @Field("presentOrLeave") String presentOrLeave,
             @Field("halfLeave") String halfLeave,
             @Field("fullLeave") String fullLeave,
             @Field("workDone") String workDone,
-            @Field("leaveReason") String leaveReason,
-            @Field("createdAt") String createdAt
+            @Field("leaveReason") String leaveReason
+//            @Field("createdAt") String createdAt
     );
 
     @FormUrlEncoded

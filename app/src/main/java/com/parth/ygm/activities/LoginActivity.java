@@ -69,6 +69,12 @@ public class LoginActivity extends AppCompatActivity {
                                 String email = user.getEmail();
                                 String phone = user.getPhone();
 
+                                preferenceManager.putString(Constants.KEY_NAME, name);
+                                preferenceManager.putString(Constants.KEY_EMPID, empId);
+                                preferenceManager.putString(Constants.KEY_EMAIL, email);
+                                preferenceManager.putString(Constants.KEY_PHONE, phone);
+                                preferenceManager.putString(Constants.KEY_IS_SIGNED_IN, "yes");
+
                                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                                 finish();
                             } else {
@@ -78,24 +84,6 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(LoginActivity.this, "Error occurred, please try again later!", Toast.LENGTH_SHORT).show();
                         }
-
-//                            Gson gson = new Gson();
-//                            Type type = new TypeToken<Map<String, Object>>() {}.getType();
-//                            Map<String, Object> responseMap = gson.fromJson(String.valueOf(response), type);
-//
-//                            String fullName = responseMap.get("fullName").toString();
-//                            String empId = responseMap.get("empId").toString();
-//                            String email = responseMap.get("email").toString();
-//                            String phone = responseMap.get("phone").toString();
-//
-//                            preferenceManager.putString(Constants.KEY_NAME, fullName);
-//                            preferenceManager.putString(Constants.KEY_EMPID, empId);
-//                            preferenceManager.putString(Constants.KEY_EMAIL, email);
-//                            preferenceManager.putString(Constants.KEY_PHONE, phone);
-//
-//                            preferenceManager.putString(Constants.KEY_IS_SIGNED_IN, "yes");
-
-
                     }
 
                     @Override

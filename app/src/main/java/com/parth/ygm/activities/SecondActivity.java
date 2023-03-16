@@ -12,11 +12,14 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.parth.ygm.R;
+import com.parth.ygm.models.GetCode;
 import com.parth.ygm.utilities.RetrofitClient;
 import com.parth.ygm.databinding.ActivitySecondBinding;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -53,6 +56,10 @@ public class SecondActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b) {
                     binding.leaveCheck.setChecked(false);
+                    binding.halfLeaveCheck.setChecked(false);
+                    binding.fullLeaveCheck.setChecked(false);
+                    binding.firstHalfCheck.setChecked(false);
+                    binding.secondHalfCheck.setChecked(false);
                     binding.linearLayout3.setVisibility(View.VISIBLE);
                     binding.linearLayout6.setVisibility(View.GONE);
                     binding.linearLayout5.setVisibility(View.GONE);
@@ -68,6 +75,10 @@ public class SecondActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b) {
                     binding.presentCheck.setChecked(false);
+                    binding.halfLeaveCheck.setChecked(false);
+                    binding.fullLeaveCheck.setChecked(false);
+                    binding.firstHalfCheck.setChecked(false);
+                    binding.secondHalfCheck.setChecked(false);
                     binding.linearLayout4.setVisibility(View.VISIBLE);
                 } else {
                     binding.linearLayout4.setVisibility(View.GONE);
@@ -80,6 +91,8 @@ public class SecondActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b) {
                     binding.fullLeaveCheck.setChecked(false);
+                    binding.firstHalfCheck.setChecked(false);
+                    binding.secondHalfCheck.setChecked(false);
                     binding.linearLayout5.setVisibility(View.VISIBLE);
                 } else {
                     binding.linearLayout5.setVisibility(View.GONE);
@@ -92,6 +105,8 @@ public class SecondActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b) {
                     binding.halfLeaveCheck.setChecked(false);
+                    binding.firstHalfCheck.setChecked(false);
+                    binding.secondHalfCheck.setChecked(false);
                     binding.linearLayout6.setVisibility(View.VISIBLE);
                     binding.linearLayout7.setVisibility(View.GONE);
                 } else {
@@ -210,24 +225,44 @@ public class SecondActivity extends AppCompatActivity {
         if (binding.presentCheck.isChecked()) {
             presentOrLeave = "present";
             presentWorkText = binding.workEditText.getText().toString();
-            LocalDateTime localDateTime = null;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                localDateTime = LocalDateTime.now();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
-                createdAt = localDateTime.format(formatter);
-            }
+//            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//                LocalTime localTime = LocalTime.now();
+//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+//                createdAt = localTime.format(formatter);
+//            }
+//            LocalDateTime localDateTime = null;
+//            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//                localDateTime = LocalDateTime.now();
+//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
+//                createdAt = localDateTime.format(formatter);
+//            }
 
 
             Call<ResponseBody> call = RetrofitClient
                     .getInstance()
                     .getAPI()
-                    .submitData(fullName, presentOrLeave, "-", "-", presentWorkText, "-", createdAt);
+                    .submitData(fullName, date, presentOrLeave, "-", "-", presentWorkText, "-");
 
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                    startActivity(new Intent(getApplicationContext(), SuccessActivity.class));
-                    finish();
+
+                    if (response.isSuccessful()) {
+                        startActivity(new Intent(getApplicationContext(), SuccessActivity.class));
+                        finish();
+//                        GetCode getCode = response.body();
+//
+//                        String message = getCode.getMessage();
+//                        if (Objects.equals(message, "inserted")) {
+//                            startActivity(new Intent(getApplicationContext(), SuccessActivity.class));
+//                            finish();
+//                        } else {
+//                            Toast.makeText(SecondActivity.this, "Data not inserted!", Toast.LENGTH_SHORT).show();
+//                        }
+                    } else {
+                        Toast.makeText(SecondActivity.this, "Error occurred, please try again later!", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
 
                 @Override
@@ -247,23 +282,42 @@ public class SecondActivity extends AppCompatActivity {
                 }
 
                 halfWorkText = binding.halfWorkEditText.getText().toString();
-                LocalDateTime localDateTime = null;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    localDateTime = LocalDateTime.now();
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
-                    createdAt = localDateTime.format(formatter);
-                }
+
+//                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//                    LocalTime localTime = LocalTime.now();
+//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+//                    createdAt = localTime.format(formatter);
+//                }
+//                LocalDateTime localDateTime = null;
+//                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//                    localDateTime = LocalDateTime.now();
+//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
+//                    createdAt = localDateTime.format(formatter);
+//                }
 
                 Call<ResponseBody> call = RetrofitClient
                         .getInstance()
                         .getAPI()
-                        .submitData(fullName, presentOrLeave, firstOrSecond, "-", halfWorkText, "-", createdAt);
+                        .submitData(fullName, date, presentOrLeave, firstOrSecond, "-", halfWorkText, "-");
 
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        startActivity(new Intent(getApplicationContext(), SuccessActivity.class));
-                        finish();
+                        if (response.isSuccessful()) {
+                            startActivity(new Intent(getApplicationContext(), SuccessActivity.class));
+                            finish();
+//                            GetCode getCode = response.body();
+//
+//                            String message = getCode.getMessage();
+//                            if (Objects.equals(message, "inserted")) {
+//                                startActivity(new Intent(getApplicationContext(), SuccessActivity.class));
+//                                finish();
+//                            } else {
+//                                Toast.makeText(SecondActivity.this, "Data not inserted!", Toast.LENGTH_SHORT).show();
+//                            }
+                        } else {
+                            Toast.makeText(SecondActivity.this, "Error occurred, please try again later!", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -275,23 +329,42 @@ public class SecondActivity extends AppCompatActivity {
             } else if (binding.fullLeaveCheck.isChecked()) {
 
                 leaveReason = binding.leaveReasonEditText.getText().toString();
-                LocalDateTime localDateTime = null;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    localDateTime = LocalDateTime.now();
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
-                    createdAt = localDateTime.format(formatter);
-                }
+//                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//                    LocalTime localTime = LocalTime.now();
+//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+//                    createdAt = localTime.format(formatter);
+//                }
+//                LocalDateTime localDateTime = null;
+//                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//                    localDateTime = LocalDateTime.now();
+//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
+//                    createdAt = localDateTime.format(formatter);
+//                }
 
                 Call<ResponseBody> call = RetrofitClient
                         .getInstance()
                         .getAPI()
-                        .submitData(fullName, presentOrLeave, "-", "yes", "-", leaveReason, createdAt);
+                        .submitData(fullName, date, presentOrLeave, "-", "yes", "-", leaveReason);
 
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        startActivity(new Intent(getApplicationContext(), SuccessActivity.class));
-                        finish();
+                        if (response.isSuccessful()) {
+                            startActivity(new Intent(getApplicationContext(), SuccessActivity.class));
+                            finish();
+//                            GetCode getCode = response.body();
+//
+//                            String message = getCode.getMessage();
+//                            if (Objects.equals(message, "inserted")) {
+//                                startActivity(new Intent(getApplicationContext(), SuccessActivity.class));
+//                                finish();
+//                            } else {
+//                                Toast.makeText(SecondActivity.this, "Data not inserted!", Toast.LENGTH_SHORT).show();
+//                            }
+                        } else {
+                            Toast.makeText(SecondActivity.this, "Error occurred, please try again later!", Toast.LENGTH_SHORT).show();
+                        }
+
                     }
 
                     @Override

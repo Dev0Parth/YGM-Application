@@ -15,7 +15,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".SecondActivity"
+            android:name=".activities.SecondActivity"
             android:exported="false" />
         <activity
             android:name=".activities.LoginActivity"
