@@ -1,6 +1,5 @@
 package com.parth.ygm.utilities;
 
-import com.parth.ygm.models.GetCode;
 import com.parth.ygm.models.User;
 
 import okhttp3.ResponseBody;
@@ -19,7 +18,7 @@ public interface API {
             @Field("presentOrLeave") String presentOrLeave,
             @Field("halfLeave") String halfLeave,
             @Field("fullLeave") String fullLeave,
-            @Field("workDone") String workDone,
+            @Field("scopeOfWork") String scopeOfWork,
             @Field("leaveReason") String leaveReason
 //            @Field("createdAt") String createdAt
     );

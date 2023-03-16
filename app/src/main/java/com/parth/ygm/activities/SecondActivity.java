@@ -1,24 +1,27 @@
 package com.parth.ygm.activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.parth.ygm.R;
-import com.parth.ygm.models.GetCode;
+import com.parth.ygm.utilities.Constants;
 import com.parth.ygm.utilities.RetrofitClient;
 import com.parth.ygm.databinding.ActivitySecondBinding;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 import okhttp3.ResponseBody;
@@ -209,6 +212,15 @@ public class SecondActivity extends AppCompatActivity {
             }
         });
 
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         binding.submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -225,18 +237,6 @@ public class SecondActivity extends AppCompatActivity {
         if (binding.presentCheck.isChecked()) {
             presentOrLeave = "present";
             presentWorkText = binding.workEditText.getText().toString();
-//            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//                LocalTime localTime = LocalTime.now();
-//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-//                createdAt = localTime.format(formatter);
-//            }
-//            LocalDateTime localDateTime = null;
-//            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//                localDateTime = LocalDateTime.now();
-//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
-//                createdAt = localDateTime.format(formatter);
-//            }
-
 
             Call<ResponseBody> call = RetrofitClient
                     .getInstance()
@@ -248,17 +248,25 @@ public class SecondActivity extends AppCompatActivity {
                 public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
 
                     if (response.isSuccessful()) {
-                        startActivity(new Intent(getApplicationContext(), SuccessActivity.class));
-                        finish();
-//                        GetCode getCode = response.body();
-//
-//                        String message = getCode.getMessage();
-//                        if (Objects.equals(message, "inserted")) {
-//                            startActivity(new Intent(getApplicationContext(), SuccessActivity.class));
-//                            finish();
-//                        } else {
-//                            Toast.makeText(SecondActivity.this, "Data not inserted!", Toast.LENGTH_SHORT).show();
-//                        }
+
+                        ConstraintLayout successConstraintLayout = findViewById(R.id.successConstraintLayout);
+                        View view = LayoutInflater.from(SecondActivity.this).inflate(R.layout.success_dialog_layout, successConstraintLayout);
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(SecondActivity.this);
+                        builder.setView(view);
+                        final AlertDialog alertDialog = builder.create();
+
+                        if (alertDialog.getWindow() != null) {
+                            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                        }
+                        alertDialog.show();
+
+                        new Handler().postDelayed(() -> {
+                            alertDialog.dismiss();
+                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                            finish();
+                        }, 2000);
+
                     } else {
                         Toast.makeText(SecondActivity.this, "Error occurred, please try again later!", Toast.LENGTH_SHORT).show();
                     }
@@ -282,19 +290,6 @@ public class SecondActivity extends AppCompatActivity {
                 }
 
                 halfWorkText = binding.halfWorkEditText.getText().toString();
-
-//                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//                    LocalTime localTime = LocalTime.now();
-//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-//                    createdAt = localTime.format(formatter);
-//                }
-//                LocalDateTime localDateTime = null;
-//                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//                    localDateTime = LocalDateTime.now();
-//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
-//                    createdAt = localDateTime.format(formatter);
-//                }
-
                 Call<ResponseBody> call = RetrofitClient
                         .getInstance()
                         .getAPI()
@@ -304,17 +299,23 @@ public class SecondActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.isSuccessful()) {
-                            startActivity(new Intent(getApplicationContext(), SuccessActivity.class));
-                            finish();
-//                            GetCode getCode = response.body();
-//
-//                            String message = getCode.getMessage();
-//                            if (Objects.equals(message, "inserted")) {
-//                                startActivity(new Intent(getApplicationContext(), SuccessActivity.class));
-//                                finish();
-//                            } else {
-//                                Toast.makeText(SecondActivity.this, "Data not inserted!", Toast.LENGTH_SHORT).show();
-//                            }
+                            ConstraintLayout successConstraintLayout = findViewById(R.id.successConstraintLayout);
+                            View view = LayoutInflater.from(SecondActivity.this).inflate(R.layout.success_dialog_layout, successConstraintLayout);
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(SecondActivity.this);
+                            builder.setView(view);
+                            final AlertDialog alertDialog = builder.create();
+
+                            if (alertDialog.getWindow() != null) {
+                                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                            }
+                            alertDialog.show();
+
+                            new Handler().postDelayed(() -> {
+                                alertDialog.dismiss();
+                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                finish();
+                            }, 2000);
                         } else {
                             Toast.makeText(SecondActivity.this, "Error occurred, please try again later!", Toast.LENGTH_SHORT).show();
                         }
@@ -329,17 +330,6 @@ public class SecondActivity extends AppCompatActivity {
             } else if (binding.fullLeaveCheck.isChecked()) {
 
                 leaveReason = binding.leaveReasonEditText.getText().toString();
-//                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//                    LocalTime localTime = LocalTime.now();
-//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-//                    createdAt = localTime.format(formatter);
-//                }
-//                LocalDateTime localDateTime = null;
-//                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//                    localDateTime = LocalDateTime.now();
-//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
-//                    createdAt = localDateTime.format(formatter);
-//                }
 
                 Call<ResponseBody> call = RetrofitClient
                         .getInstance()
@@ -350,17 +340,23 @@ public class SecondActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.isSuccessful()) {
-                            startActivity(new Intent(getApplicationContext(), SuccessActivity.class));
-                            finish();
-//                            GetCode getCode = response.body();
-//
-//                            String message = getCode.getMessage();
-//                            if (Objects.equals(message, "inserted")) {
-//                                startActivity(new Intent(getApplicationContext(), SuccessActivity.class));
-//                                finish();
-//                            } else {
-//                                Toast.makeText(SecondActivity.this, "Data not inserted!", Toast.LENGTH_SHORT).show();
-//                            }
+                            ConstraintLayout successConstraintLayout = findViewById(R.id.successConstraintLayout);
+                            View view = LayoutInflater.from(SecondActivity.this).inflate(R.layout.success_dialog_layout, successConstraintLayout);
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(SecondActivity.this);
+                            builder.setView(view);
+                            final AlertDialog alertDialog = builder.create();
+
+                            if (alertDialog.getWindow() != null) {
+                                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                            }
+                            alertDialog.show();
+
+                            new Handler().postDelayed(() -> {
+                                alertDialog.dismiss();
+                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                finish();
+                            }, 2000);
                         } else {
                             Toast.makeText(SecondActivity.this, "Error occurred, please try again later!", Toast.LENGTH_SHORT).show();
                         }
@@ -379,6 +375,7 @@ public class SecondActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        finishAffinity();
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+        finish();
     }
 }

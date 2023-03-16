@@ -18,4 +18,9 @@
     <string name="select_an_option">Select an option:</string>
     <string name="second_half">Second Half</string>
     <string name="first_half">First Half</string>
+    <string name="scope_of_work">scope of work:</string>
+    <string name="scoping">scoping:</string>
+    <string name="back">Back</string>
+    <string name="your_data_has_been_saved">Your data has been saved.</string>
+    <string name="success">Success</string>
 </resources>

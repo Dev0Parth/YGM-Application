@@ -1,269 +1,341 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/_20sdp"
-    tools:context=".activities.SecondActivity">
+    tools:context=".activities.SecondActivity" >
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
+        android:padding="@dimen/_20sdp">
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
 
             <LinearLayout
+                android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/select_an_option"
+                        android:theme="@style/interRegular"
+                        android:textColor="@color/primary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/presentCheck"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:text="@string/present" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/leaveCheck"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/leave"
+                        tools:ignore="RelativeOverlap" />
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:visibility="gone"
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/workTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/select_an_option"
-                    android:theme="@style/interRegular"
-                    android:textColor="@color/primary"/>
+                    android:layout_marginStart="@dimen/_25sdp"
+                    android:text="@string/scope_of_work"
+                    android:textColor="@color/dimgray"
+                    android:textSize="@dimen/_12ssp" />
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/presentCheck"
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/workEditText"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_20sdp"
-                    android:text="@string/present" />
-
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/leaveCheck"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/leave"
-                    tools:ignore="RelativeOverlap" />
-
-            </LinearLayout>
-
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:visibility="gone"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/workTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_25sdp"
-                android:text="@string/work_done"
-                android:textColor="@color/dimgray"
-                android:textSize="@dimen/_12ssp" />
-
-            <EditText
-                android:id="@+id/workEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/edittext_background"
-                android:gravity="top|start"
-                android:inputType="textMultiLine"
-                android:maxLines="10"
-                android:minLines="8"
-                android:padding="@dimen/_10sdp"
-                android:textColor="@color/primary"
-                android:textSize="@dimen/_16ssp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:background="@drawable/edittext_background"
-            android:gravity="center"
-            android:visibility="gone"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/edittext_background"
+                    android:gravity="top|start"
+                    android:inputType="textMultiLine"
+                    android:maxLines="10"
+                    android:minLines="8"
+                    android:padding="@dimen/_10sdp"
+                    android:textColor="@color/primary"
+                    android:textSize="@dimen/_16ssp" />
 
                 <TextView
+                    android:id="@+id/scopingTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/select_an_option"
-                    android:theme="@style/interRegular"
-                    android:textColor="@color/primary"/>
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_25sdp"
+                    android:text="@string/scoping"
+                    android:textColor="@color/dimgray"
+                    android:textSize="@dimen/_12ssp" />
+
+                <EditText
+                    android:id="@+id/scopingEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/edittext_background"
+                    android:gravity="top|start"
+                    android:inputType="textMultiLine"
+                    android:maxLines="3"
+                    android:minLines="3"
+                    android:padding="@dimen/_10sdp"
+                    android:textColor="@color/primary"
+                    android:textSize="@dimen/_16ssp" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearLayout4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@drawable/edittext_background"
+                android:gravity="center"
+                android:visibility="gone"
+                android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/halfLeaveCheck"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_20sdp"
-                    android:text="@string/half_leave" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/fullLeaveCheck"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/full_leave"
-                    tools:ignore="RelativeOverlap" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/select_an_option"
+                        android:theme="@style/interRegular"
+                        android:textColor="@color/primary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/halfLeaveCheck"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:text="@string/half_leave" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/fullLeaveCheck"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/full_leave"
+                        tools:ignore="RelativeOverlap" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/linearLayout5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:padding="@dimen/_15sdp"
-            android:background="@drawable/edittext_background"
-            android:gravity="center"
-            android:visibility="gone"
-            android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/linearLayout5"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:padding="@dimen/_15sdp"
+                android:background="@drawable/edittext_background"
+                android:gravity="center"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/select_an_option"
+                        android:theme="@style/interRegular"
+                        android:textColor="@color/primary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/firstHalfCheck"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:text="@string/first_half" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/secondHalfCheck"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/second_half" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:visibility="gone"
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/leaveReasonTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/select_an_option"
-                    android:theme="@style/interRegular"
-                    android:textColor="@color/primary"/>
+                    android:layout_marginStart="@dimen/_25sdp"
+                    android:text="@string/reason_of_leave"
+                    android:textColor="@color/dimgray"
+                    android:textSize="@dimen/_12ssp" />
+
+                <EditText
+                    android:id="@+id/leaveReasonEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/edittext_background"
+                    android:gravity="top|start"
+                    android:inputType="textMultiLine"
+                    android:maxLines="10"
+                    android:minLines="8"
+                    android:padding="@dimen/_10sdp"
+                    android:textColor="@color/primary"
+                    android:textSize="@dimen/_16ssp" />
 
             </LinearLayout>
+
 
             <LinearLayout
+                android:id="@+id/linearLayout7"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/firstHalfCheck"
+                <TextView
+                    android:id="@+id/halfWorkTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_20sdp"
-                    android:text="@string/first_half" />
+                    android:layout_marginStart="@dimen/_25sdp"
+                    android:text="@string/scope_of_work"
+                    android:textColor="@color/dimgray"
+                    android:textSize="@dimen/_12ssp" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/secondHalfCheck"
+                <EditText
+                    android:id="@+id/halfWorkEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/edittext_background"
+                    android:gravity="top|start"
+                    android:inputType="textMultiLine"
+                    android:maxLines="10"
+                    android:minLines="8"
+                    android:padding="@dimen/_10sdp"
+                    android:textColor="@color/primary"
+                    android:textSize="@dimen/_16ssp" />
+
+                <TextView
+                    android:id="@+id/halfscopingTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/second_half" />
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_25sdp"
+                    android:text="@string/scoping"
+                    android:textColor="@color/dimgray"
+                    android:textSize="@dimen/_12ssp" />
+
+                <EditText
+                    android:id="@+id/halfscopingEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/edittext_background"
+                    android:gravity="top|start"
+                    android:inputType="textMultiLine"
+                    android:maxLines="3"
+                    android:minLines="3"
+                    android:padding="@dimen/_10sdp"
+                    android:textColor="@color/primary"
+                    android:textSize="@dimen/_16ssp" />
 
             </LinearLayout>
 
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/linearLayout6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:visibility="gone"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/leaveReasonTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_25sdp"
-                android:text="@string/reason_of_leave"
-                android:textColor="@color/dimgray"
-                android:textSize="@dimen/_12ssp" />
-
-            <EditText
-                android:id="@+id/leaveReasonEditText"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/edittext_background"
-                android:gravity="top|start"
-                android:inputType="textMultiLine"
-                android:maxLines="10"
-                android:minLines="8"
-                android:padding="@dimen/_10sdp"
-                android:textColor="@color/primary"
-                android:textSize="@dimen/_16ssp" />
+                android:layout_marginTop="@dimen/_20sdp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/backBtn"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/primary"
+                    android:clickable="false"
+                    android:text="@string/back"
+                    android:layout_alignParentStart="true"
+                    android:textColor="@color/white" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/submitBtn"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/lightgray"
+                    android:clickable="false"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/submit"
+                    android:textColor="@color/white" />
+
+            </RelativeLayout>
 
         </LinearLayout>
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
-            android:id="@+id/linearLayout7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/halfWorkTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_25sdp"
-                android:text="@string/work_done"
-                android:textColor="@color/dimgray"
-                android:textSize="@dimen/_12ssp" />
-
-            <EditText
-                android:id="@+id/halfWorkEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/edittext_background"
-                android:gravity="top|start"
-                android:inputType="textMultiLine"
-                android:maxLines="10"
-                android:minLines="8"
-                android:padding="@dimen/_10sdp"
-                android:textColor="@color/primary"
-                android:textSize="@dimen/_16ssp" />
-
-        </LinearLayout>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/submitBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:background="@color/lightgray"
-            android:clickable="false"
-            android:text="@string/submit"
-            android:textColor="@color/white" />
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
