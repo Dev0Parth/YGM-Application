@@ -14,6 +14,7 @@ import com.parth.ygm.utilities.Constants;
 import com.parth.ygm.utilities.PreferenceManager;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -72,6 +73,18 @@ public class HomeActivity extends AppCompatActivity {
                 intent.putExtra("date", binding.dateEditText.getText().toString());
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        binding.logOutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Objects.equals(preferenceManager.getString(Constants.KEY_IS_SIGNED_IN), "yes")) {
+                    preferenceManager.putString(Constants.KEY_IS_SIGNED_IN, "no");
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    finish();
+                }
+
             }
         });
 
