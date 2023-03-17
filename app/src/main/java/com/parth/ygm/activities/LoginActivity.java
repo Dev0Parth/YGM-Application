@@ -66,11 +66,13 @@ public class LoginActivity extends AppCompatActivity {
                             String name = user.getName();
                             if (name != null) {
                                 String empId = user.getEmpId();
+                                String department = user.getDepartment();
                                 String email = user.getEmail();
                                 String phone = user.getPhone();
 
                                 preferenceManager.putString(Constants.KEY_NAME, name);
                                 preferenceManager.putString(Constants.KEY_EMPID, empId);
+                                preferenceManager.putString(Constants.KEY_DEPARTMENT, department);
                                 preferenceManager.putString(Constants.KEY_EMAIL, email);
                                 preferenceManager.putString(Constants.KEY_PHONE, phone);
                                 preferenceManager.putString(Constants.KEY_IS_SIGNED_IN, "yes");

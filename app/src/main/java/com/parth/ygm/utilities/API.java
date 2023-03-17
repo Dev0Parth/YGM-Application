@@ -13,14 +13,15 @@ public interface API {
     @FormUrlEncoded
     @POST("getEmployeeData.php")
     Call<ResponseBody> submitData(
+            @Field("empId") String empId,
             @Field("fullName") String fullName,
+            @Field("department") String department,
             @Field("date") String date,
-            @Field("presentOrLeave") String presentOrLeave,
-            @Field("halfLeave") String halfLeave,
-            @Field("fullLeave") String fullLeave,
+            @Field("present") String present,
+            @Field("leaveType") String leaveType,
             @Field("scopeOfWork") String scopeOfWork,
+            @Field("scoping") String scoping,
             @Field("leaveReason") String leaveReason
-//            @Field("createdAt") String createdAt
     );
 
     @FormUrlEncoded

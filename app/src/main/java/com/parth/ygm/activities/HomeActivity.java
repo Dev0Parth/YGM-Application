@@ -48,10 +48,7 @@ public class HomeActivity extends AppCompatActivity {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        long today = calendar.getTimeInMillis();
 
-        // Set the minimum date allowed for the DatePicker to today's date
-        binding.datePicker.setMinDate(today);
         binding.dateEditText.setText(day + "-" + (month + 1) + "-" + year);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -11,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.parth.ygm.R;
 import com.parth.ygm.utilities.Constants;
+import com.parth.ygm.utilities.PreferenceManager;
 import com.parth.ygm.utilities.RetrofitClient;
 import com.parth.ygm.databinding.ActivitySecondBinding;
 
@@ -33,9 +35,13 @@ public class SecondActivity extends AppCompatActivity {
 
     private ActivitySecondBinding binding;
 
-    private String fullName, date, createdAt;
-    private String presentOrLeave = "leave";
+    PreferenceManager preferenceManager;
+
+    private String fullName, date, department, createdAt;
+    private String present = "";
+    private String leaveType = "";
     private String presentWorkText = "";
+    private String scoping = "";
     private String firstOrSecond = "";
     private String halfWorkText = "";
     private String leaveReason = "";
@@ -49,6 +55,8 @@ public class SecondActivity extends AppCompatActivity {
         Intent intent = getIntent();
         fullName = intent.getStringExtra("fullName");
         date = intent.getStringExtra("date");
+
+        preferenceManager = new PreferenceManager(getApplicationContext());
 
         setListener();
     }
@@ -145,6 +153,13 @@ public class SecondActivity extends AppCompatActivity {
         binding.workEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() != 0) {
+                    binding.submitBtn.setEnabled(true);
+                    binding.submitBtn.setBackgroundColor(getResources().getColor(R.color.primary));
+                } else {
+                    binding.submitBtn.setEnabled(false);
+                    binding.submitBtn.setBackgroundColor(getResources().getColor(R.color.lightgray));
+                }
 
             }
 
@@ -169,7 +184,13 @@ public class SecondActivity extends AppCompatActivity {
         binding.halfWorkEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                if (charSequence.length() != 0) {
+                    binding.submitBtn.setEnabled(true);
+                    binding.submitBtn.setBackgroundColor(getResources().getColor(R.color.primary));
+                } else {
+                    binding.submitBtn.setEnabled(false);
+                    binding.submitBtn.setBackgroundColor(getResources().getColor(R.color.lightgray));
+                }
             }
 
             @Override
@@ -189,9 +210,18 @@ public class SecondActivity extends AppCompatActivity {
             }
         });
 
+
+
         binding.leaveReasonEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() != 0) {
+                    binding.submitBtn.setEnabled(true);
+                    binding.submitBtn.setBackgroundColor(getResources().getColor(R.color.primary));
+                } else {
+                    binding.submitBtn.setEnabled(false);
+                    binding.submitBtn.setBackgroundColor(getResources().getColor(R.color.lightgray));
+                }
 
             }
 
@@ -234,14 +264,22 @@ public class SecondActivity extends AppCompatActivity {
 
     private void sendData() {
 
+        department = preferenceManager.getString(Constants.KEY_DEPARTMENT);
+
         if (binding.presentCheck.isChecked()) {
-            presentOrLeave = "present";
+            present = "present";
             presentWorkText = binding.workEditText.getText().toString();
+            if (TextUtils.isEmpty(binding.scopingEditText.getText().toString())) {
+                scoping = null;
+            } else {
+                scoping = binding.scopingEditText.getText().toString();
+            }
+
 
             Call<ResponseBody> call = RetrofitClient
                     .getInstance()
                     .getAPI()
-                    .submitData(fullName, date, presentOrLeave, "-", "-", presentWorkText, "-");
+                    .submitData(preferenceManager.getString(Constants.KEY_EMPID), fullName, department, date, present, "-", presentWorkText, scoping, "-");
 
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
@@ -280,20 +318,24 @@ public class SecondActivity extends AppCompatActivity {
             });
 
         } else if (binding.leaveCheck.isChecked()){
-            presentOrLeave = "leave";
-
             if (binding.halfLeaveCheck.isChecked()) {
                 if (binding.firstHalfCheck.isChecked()) {
-                    firstOrSecond = "first half";
+                    leaveType = "first half leave";
                 } else if (binding.secondHalfCheck.isChecked()){
-                    firstOrSecond = "second half";
+                    leaveType = "second half leave";
                 }
 
                 halfWorkText = binding.halfWorkEditText.getText().toString();
+                if (TextUtils.isEmpty(binding.scopingEditText.getText().toString())) {
+                    scoping = null;
+                } else {
+                    scoping = binding.scopingEditText.getText().toString();
+                }
+
                 Call<ResponseBody> call = RetrofitClient
                         .getInstance()
                         .getAPI()
-                        .submitData(fullName, date, presentOrLeave, firstOrSecond, "-", halfWorkText, "-");
+                        .submitData(preferenceManager.getString(Constants.KEY_EMPID), fullName, department, date, "-", leaveType, halfWorkText, scoping, "-");
 
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
@@ -329,12 +371,13 @@ public class SecondActivity extends AppCompatActivity {
 
             } else if (binding.fullLeaveCheck.isChecked()) {
 
+                leaveType = "full leave";
                 leaveReason = binding.leaveReasonEditText.getText().toString();
 
                 Call<ResponseBody> call = RetrofitClient
                         .getInstance()
                         .getAPI()
-                        .submitData(fullName, date, presentOrLeave, "-", "yes", "-", leaveReason);
+                        .submitData(preferenceManager.getString(Constants.KEY_EMPID), fullName, department, date, "-", leaveType, "-", null, leaveReason);
 
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
