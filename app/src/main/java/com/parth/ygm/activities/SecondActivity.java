@@ -326,10 +326,10 @@ public class SecondActivity extends AppCompatActivity {
                 }
 
                 halfWorkText = binding.halfWorkEditText.getText().toString();
-                if (TextUtils.isEmpty(binding.scopingEditText.getText().toString())) {
+                if (TextUtils.isEmpty(binding.halfscopingEditText.getText().toString())) {
                     scoping = null;
                 } else {
-                    scoping = binding.scopingEditText.getText().toString();
+                    scoping = binding.halfscopingEditText.getText().toString();
                 }
 
                 Call<ResponseBody> call = RetrofitClient
