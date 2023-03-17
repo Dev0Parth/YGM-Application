@@ -3,7 +3,10 @@ package com.parth.ygm.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.DatePicker;
 import com.parth.ygm.databinding.ActivityHomeBinding;
 import com.parth.ygm.utilities.Constants;
 import com.parth.ygm.utilities.PreferenceManager;
+import com.parth.ygm.utilities.SendDataReceiver;
 
 import java.util.Calendar;
 import java.util.Objects;
@@ -24,6 +28,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private String selectedDate;
 
+    BroadcastReceiver broadcastReceiver;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +37,37 @@ public class HomeActivity extends AppCompatActivity {
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        broadcastReceiver = new SendDataReceiver();
+        registerNetworkReceiver();
+
         preferenceManager = new PreferenceManager(getApplicationContext());
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         setListener();
+    }
+
+    protected void registerNetworkReceiver() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    protected void unRegisterReceiver() {
+        try {
+            unregisterReceiver(broadcastReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unRegisterReceiver();
     }
 
     private void setListener() {
@@ -49,13 +81,13 @@ public class HomeActivity extends AppCompatActivity {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        binding.dateEditText.setText(day + "-" + (month + 1) + "-" + year);
+        binding.dateEditText.setText(day + "/" + (month + 1) + "/" + year);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             binding.datePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
                 @Override
                 public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
-                    selectedDate = i2 + "-" + (i1 + 1) + "-" + i;
+                    selectedDate = i2 + "/" + (i1 + 1) + "/" + i;
                     binding.dateEditText.setText(selectedDate);
                 }
             });

@@ -5,8 +5,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.app.Dialog;
+import android.app.job.JobInfo;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,12 +22,16 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.parth.ygm.R;
+import com.parth.ygm.models.EmployeeData;
 import com.parth.ygm.utilities.Constants;
+import com.parth.ygm.utilities.DataStorage;
+import com.parth.ygm.utilities.InternetConnectionChecker;
 import com.parth.ygm.utilities.PreferenceManager;
 import com.parth.ygm.utilities.RetrofitClient;
 import com.parth.ygm.databinding.ActivitySecondBinding;
 
-import java.util.Objects;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -40,6 +47,7 @@ public class SecondActivity extends AppCompatActivity {
     private String fullName, date, department, createdAt;
     private String present = "";
     private String leaveType = "";
+    private String formattedDateTime = "0000-00-00 00:00:00";
     private String presentWorkText = "";
     private String scoping = "";
     private String firstOrSecond = "";
@@ -262,9 +270,18 @@ public class SecondActivity extends AppCompatActivity {
     }
 
 
+
+
     private void sendData() {
 
+        SharedPreferences sharedPreferences = getSharedPreferences("MyEmployeeData", Context.MODE_PRIVATE);
         department = preferenceManager.getString(Constants.KEY_DEPARTMENT);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            LocalDateTime localDateTime = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+            formattedDateTime = localDateTime.format(formatter);
+        }
 
         if (binding.presentCheck.isChecked()) {
             present = "present";
@@ -275,54 +292,93 @@ public class SecondActivity extends AppCompatActivity {
                 scoping = binding.scopingEditText.getText().toString();
             }
 
+            if (!InternetConnectionChecker.isInternetReachable(getApplicationContext())){
 
-            Call<ResponseBody> call = RetrofitClient
-                    .getInstance()
-                    .getAPI()
-                    .submitData(preferenceManager.getString(Constants.KEY_EMPID), fullName, department, date, present, "-", presentWorkText, scoping, "-");
+                Toast.makeText(this, "not connected!", Toast.LENGTH_SHORT).show();
 
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("empId", preferenceManager.getString(Constants.KEY_EMPID));
+                editor.putString("fullName", fullName);
+                editor.putString("department", department);
+                editor.putString("date", date);
+                editor.putString("present", present);
+                editor.putString("leaveType", "-");
+                editor.putString("scopeOfWork", presentWorkText);
+                editor.putString("scoping", scoping);
+                editor.putString("leaveReason", "-");
+                editor.putString("createdAt", formattedDateTime);
+                editor.apply();
 
-                    if (response.isSuccessful()) {
+                ConstraintLayout successConstraintLayout = findViewById(R.id.successConstraintLayout);
+                View view = LayoutInflater.from(SecondActivity.this).inflate(R.layout.success_dialog_layout, successConstraintLayout);
 
-                        ConstraintLayout successConstraintLayout = findViewById(R.id.successConstraintLayout);
-                        View view = LayoutInflater.from(SecondActivity.this).inflate(R.layout.success_dialog_layout, successConstraintLayout);
+                AlertDialog.Builder builder = new AlertDialog.Builder(SecondActivity.this);
+                builder.setView(view);
+                final AlertDialog alertDialog = builder.create();
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(SecondActivity.this);
-                        builder.setView(view);
-                        final AlertDialog alertDialog = builder.create();
+                if (alertDialog.getWindow() != null) {
+                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                }
+                alertDialog.show();
 
-                        if (alertDialog.getWindow() != null) {
-                            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                new Handler().postDelayed(() -> {
+                    alertDialog.dismiss();
+                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    finish();
+                }, 2000);
+
+            } else {
+
+                Call<ResponseBody> call = RetrofitClient
+                        .getInstance()
+                        .getAPI()
+                        .submitData(preferenceManager.getString(Constants.KEY_EMPID), fullName, department, date, present, "-", presentWorkText, scoping, "-", null);
+
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+
+                        if (response.isSuccessful()) {
+
+                            ConstraintLayout successConstraintLayout = findViewById(R.id.successConstraintLayout);
+                            View view = LayoutInflater.from(SecondActivity.this).inflate(R.layout.success_dialog_layout, successConstraintLayout);
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(SecondActivity.this);
+                            builder.setView(view);
+                            final AlertDialog alertDialog = builder.create();
+
+                            if (alertDialog.getWindow() != null) {
+                                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                            }
+                            alertDialog.show();
+
+                            new Handler().postDelayed(() -> {
+                                alertDialog.dismiss();
+                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                finish();
+                            }, 2000);
+
+                        } else {
+                            Toast.makeText(SecondActivity.this, "Error occurred, please try again later!", Toast.LENGTH_SHORT).show();
                         }
-                        alertDialog.show();
 
-                        new Handler().postDelayed(() -> {
-                            alertDialog.dismiss();
-                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                            finish();
-                        }, 2000);
-
-                    } else {
-                        Toast.makeText(SecondActivity.this, "Error occurred, please try again later!", Toast.LENGTH_SHORT).show();
                     }
 
-                }
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Toast.makeText(SecondActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Toast.makeText(SecondActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+
 
         } else if (binding.leaveCheck.isChecked()){
             if (binding.halfLeaveCheck.isChecked()) {
                 if (binding.firstHalfCheck.isChecked()) {
-                    leaveType = "first half leave";
+                    leaveType = "half leave (first half)";
                 } else if (binding.secondHalfCheck.isChecked()){
-                    leaveType = "second half leave";
+                    leaveType = "half leave (second half)";
                 }
 
                 halfWorkText = binding.halfWorkEditText.getText().toString();
@@ -332,85 +388,156 @@ public class SecondActivity extends AppCompatActivity {
                     scoping = binding.halfscopingEditText.getText().toString();
                 }
 
-                Call<ResponseBody> call = RetrofitClient
-                        .getInstance()
-                        .getAPI()
-                        .submitData(preferenceManager.getString(Constants.KEY_EMPID), fullName, department, date, "-", leaveType, halfWorkText, scoping, "-");
+                if (!InternetConnectionChecker.isInternetReachable(getApplicationContext())) {
 
-                call.enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if (response.isSuccessful()) {
-                            ConstraintLayout successConstraintLayout = findViewById(R.id.successConstraintLayout);
-                            View view = LayoutInflater.from(SecondActivity.this).inflate(R.layout.success_dialog_layout, successConstraintLayout);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("empId", preferenceManager.getString(Constants.KEY_EMPID));
+                    editor.putString("fullName", fullName);
+                    editor.putString("department", department);
+                    editor.putString("date", date);
+                    editor.putString("present", "-");
+                    editor.putString("leaveType", leaveType);
+                    editor.putString("scopeOfWork", halfWorkText);
+                    editor.putString("scoping", scoping);
+                    editor.putString("leaveReason", "-");
+                    editor.putString("createdAt", formattedDateTime);
+                    editor.apply();
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(SecondActivity.this);
-                            builder.setView(view);
-                            final AlertDialog alertDialog = builder.create();
+                    ConstraintLayout successConstraintLayout = findViewById(R.id.successConstraintLayout);
+                    View view = LayoutInflater.from(SecondActivity.this).inflate(R.layout.success_dialog_layout, successConstraintLayout);
 
-                            if (alertDialog.getWindow() != null) {
-                                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SecondActivity.this);
+                    builder.setView(view);
+                    final AlertDialog alertDialog = builder.create();
+
+                    if (alertDialog.getWindow() != null) {
+                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                    }
+                    alertDialog.show();
+
+                    new Handler().postDelayed(() -> {
+                        alertDialog.dismiss();
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                        finish();
+                    }, 2000);
+                } else {
+
+                    Call<ResponseBody> call = RetrofitClient
+                            .getInstance()
+                            .getAPI()
+                            .submitData(preferenceManager.getString(Constants.KEY_EMPID), fullName, department, date, "-", leaveType, halfWorkText, scoping, "-", null);
+
+                    call.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            if (response.isSuccessful()) {
+                                ConstraintLayout successConstraintLayout = findViewById(R.id.successConstraintLayout);
+                                View view = LayoutInflater.from(SecondActivity.this).inflate(R.layout.success_dialog_layout, successConstraintLayout);
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(SecondActivity.this);
+                                builder.setView(view);
+                                final AlertDialog alertDialog = builder.create();
+
+                                if (alertDialog.getWindow() != null) {
+                                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                                }
+                                alertDialog.show();
+
+                                new Handler().postDelayed(() -> {
+                                    alertDialog.dismiss();
+                                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                    finish();
+                                }, 2000);
+                            } else {
+                                Toast.makeText(SecondActivity.this, "Error occurred, please try again later!", Toast.LENGTH_SHORT).show();
                             }
-                            alertDialog.show();
-
-                            new Handler().postDelayed(() -> {
-                                alertDialog.dismiss();
-                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                                finish();
-                            }, 2000);
-                        } else {
-                            Toast.makeText(SecondActivity.this, "Error occurred, please try again later!", Toast.LENGTH_SHORT).show();
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Toast.makeText(SecondActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Toast.makeText(SecondActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
 
             } else if (binding.fullLeaveCheck.isChecked()) {
 
                 leaveType = "full leave";
                 leaveReason = binding.leaveReasonEditText.getText().toString();
 
-                Call<ResponseBody> call = RetrofitClient
-                        .getInstance()
-                        .getAPI()
-                        .submitData(preferenceManager.getString(Constants.KEY_EMPID), fullName, department, date, "-", leaveType, "-", null, leaveReason);
+                if (!InternetConnectionChecker.isInternetReachable(getApplicationContext())) {
 
-                call.enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if (response.isSuccessful()) {
-                            ConstraintLayout successConstraintLayout = findViewById(R.id.successConstraintLayout);
-                            View view = LayoutInflater.from(SecondActivity.this).inflate(R.layout.success_dialog_layout, successConstraintLayout);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("empId", preferenceManager.getString(Constants.KEY_EMPID));
+                    editor.putString("fullName", fullName);
+                    editor.putString("department", department);
+                    editor.putString("date", date);
+                    editor.putString("present", "-");
+                    editor.putString("leaveType", leaveType);
+                    editor.putString("scopeOfWork", "-");
+                    editor.putString("scoping", null);
+                    editor.putString("leaveReason", leaveReason);
+                    editor.putString("createdAt", formattedDateTime);
+                    editor.apply();
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(SecondActivity.this);
-                            builder.setView(view);
-                            final AlertDialog alertDialog = builder.create();
 
-                            if (alertDialog.getWindow() != null) {
-                                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                    ConstraintLayout successConstraintLayout = findViewById(R.id.successConstraintLayout);
+                    View view = LayoutInflater.from(SecondActivity.this).inflate(R.layout.success_dialog_layout, successConstraintLayout);
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SecondActivity.this);
+                    builder.setView(view);
+                    final AlertDialog alertDialog = builder.create();
+
+                    if (alertDialog.getWindow() != null) {
+                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                    }
+                    alertDialog.show();
+
+                    new Handler().postDelayed(() -> {
+                        alertDialog.dismiss();
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                        finish();
+                    }, 2000);
+                } else {
+
+                    Call<ResponseBody> call = RetrofitClient
+                            .getInstance()
+                            .getAPI()
+                            .submitData(preferenceManager.getString(Constants.KEY_EMPID), fullName, department, date, "-", leaveType, "-", null, leaveReason, null);
+
+                    call.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            if (response.isSuccessful()) {
+                                ConstraintLayout successConstraintLayout = findViewById(R.id.successConstraintLayout);
+                                View view = LayoutInflater.from(SecondActivity.this).inflate(R.layout.success_dialog_layout, successConstraintLayout);
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(SecondActivity.this);
+                                builder.setView(view);
+                                final AlertDialog alertDialog = builder.create();
+
+                                if (alertDialog.getWindow() != null) {
+                                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                                }
+                                alertDialog.show();
+
+                                new Handler().postDelayed(() -> {
+                                    alertDialog.dismiss();
+                                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                    finish();
+                                }, 2000);
+                            } else {
+                                Toast.makeText(SecondActivity.this, "Error occurred, please try again later!", Toast.LENGTH_SHORT).show();
                             }
-                            alertDialog.show();
 
-                            new Handler().postDelayed(() -> {
-                                alertDialog.dismiss();
-                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                                finish();
-                            }, 2000);
-                        } else {
-                            Toast.makeText(SecondActivity.this, "Error occurred, please try again later!", Toast.LENGTH_SHORT).show();
                         }
 
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Toast.makeText(SecondActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Toast.makeText(SecondActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         }
 
