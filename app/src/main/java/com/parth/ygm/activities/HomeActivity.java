@@ -1,44 +1,40 @@
 package com.parth.ygm.activities;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
-import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.DatePicker;
 
 import com.parth.ygm.databinding.ActivityHomeBinding;
 import com.parth.ygm.utilities.Constants;
+import com.parth.ygm.utilities.DataSyncWorker;
 import com.parth.ygm.utilities.PreferenceManager;
-import com.parth.ygm.utilities.SendDataReceiver;
 
-import java.util.Calendar;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class HomeActivity extends AppCompatActivity {
 
     private ActivityHomeBinding binding;
 
     PreferenceManager preferenceManager;
-
-    private String selectedDate;
-
-    BroadcastReceiver broadcastReceiver;
-
+    private static final int INTERVAL = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        broadcastReceiver = new SendDataReceiver();
-        registerNetworkReceiver();
 
         preferenceManager = new PreferenceManager(getApplicationContext());
 
@@ -47,61 +43,22 @@ public class HomeActivity extends AppCompatActivity {
         setListener();
     }
 
-    protected void registerNetworkReceiver() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        }
-    }
-
-    protected void unRegisterReceiver() {
-        try {
-            unregisterReceiver(broadcastReceiver);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unRegisterReceiver();
-    }
-
     private void setListener() {
 
-        binding.nameEditText.setText(preferenceManager.getString(Constants.KEY_NAME));
-        binding.nameEditText.setEnabled(false);
+        binding.nameTitleView.setText(preferenceManager.getString(Constants.KEY_NAME));
 
-        // Get today's date
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        binding.dateEditText.setText(day + "/" + (month + 1) + "/" + year);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            binding.datePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
-                @Override
-                public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
-                    selectedDate = i2 + "/" + (i1 + 1) + "/" + i;
-                    binding.dateEditText.setText(selectedDate);
-                }
-            });
-        }
-
-
-        binding.nextBtn.setOnClickListener(new View.OnClickListener() {
+        binding.addWorkCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
-                intent.putExtra("fullName", binding.nameEditText.getText().toString());
-                intent.putExtra("date", binding.dateEditText.getText().toString());
-                startActivity(intent);
+                startActivity(new Intent(getApplicationContext(), WorkFirstActivity.class));
                 finish();
+            }
+        });
+
+        binding.applyLeaveCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), LeaveFirstActivity.class));
             }
         });
 
@@ -116,7 +73,6 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
 

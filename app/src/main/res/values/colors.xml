@@ -8,5 +8,6 @@
     <color name="lightgray">#8692a6</color>
     <color name="whitesmoke">#f2f4f5</color>
     <color name="success">#28a745</color>
+    <color name="warning">#FF0000</color>
     <color name="ssBackground">#edc18d</color>
 </resources>

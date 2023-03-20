@@ -23,4 +23,10 @@
     <string name="back">Back</string>
     <string name="your_data_has_been_saved">Your data has been saved.</string>
     <string name="success">Success</string>
+    <string name="apply_leave">Apply Leave</string>
+    <string name="add_work">Add Work</string>
+    <string name="welcome_to">Welcome to</string>
+    <string name="date">Date</string>
+    <string name="ast">*</string>
+    <string name="next">Next</string>
 </resources>
