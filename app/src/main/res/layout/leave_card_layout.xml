@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/leave_card_background"
+    android:layout_margin="@dimen/_10sdp"
+    android:padding="@dimen/_20sdp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_10sdp">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="Name"
+            android:textColor="@color/whitesmoke"
+            android:theme="@style/interMedium"
+            android:textSize="@dimen/_12ssp" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="Date"
+            android:textColor="@color/whitesmoke"
+            android:theme="@style/interRegular"
+            android:textSize="@dimen/_12ssp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_10sdp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/from"
+                android:textColor="@color/whitesmoke"
+                android:theme="@style/interRegular"
+                android:textSize="@dimen/_12ssp" />
+
+            <TextView
+                android:id="@+id/leaveFromDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:theme="@style/interRegular"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/whitesmoke"
+                android:text="date"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/to"
+                android:textColor="@color/whitesmoke"
+                android:theme="@style/interRegular"
+                android:textSize="@dimen/_12ssp" />
+
+            <TextView
+                android:id="@+id/leaveToDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:theme="@style/interRegular"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/whitesmoke"
+                android:text="date"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reason"
+            android:theme="@style/interRegular"
+            android:textColor="@color/whitesmoke"
+            android:textSize="@dimen/_12ssp" />
+
+        <TextView
+            android:id="@+id/leaveReason"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:theme="@style/interRegular"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/whitesmoke"
+            android:text="reason"/>
+
+    </LinearLayout>
+</LinearLayout>

@@ -29,4 +29,7 @@
     <string name="date">Date</string>
     <string name="ast">*</string>
     <string name="next">Next</string>
+    <string name="from">From:</string>
+    <string name="to">To:</string>
+    <string name="reason">Reason:</string>
 </resources>
