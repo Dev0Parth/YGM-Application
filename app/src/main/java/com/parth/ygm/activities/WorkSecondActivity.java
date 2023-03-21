@@ -10,6 +10,7 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -41,7 +42,6 @@ public class WorkSecondActivity extends AppCompatActivity {
     private String formattedDateTime = "0000-00-00 00:00:00";
     private String presentWorkText = "";
     private String scoping = "";
-    private String firstOrSecond = "";
     private String halfWorkText = "";
     private String leaveReason = "";
 
@@ -64,16 +64,6 @@ public class WorkSecondActivity extends AppCompatActivity {
     }
 
     private void setListener() {
-
-//        Constraints constraints = new Constraints.Builder()
-//                .setRequiredNetworkType(NetworkType.CONNECTED)
-//                .build();
-//
-//        OneTimeWorkRequest myWorkRequest = new OneTimeWorkRequest.Builder(DataSyncWorker.class)
-//                .setConstraints(constraints)
-//                .build();
-//
-//        WorkManager.getInstance(getApplicationContext()).enqueue(myWorkRequest);
 
         binding.presentCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -128,26 +118,28 @@ public class WorkSecondActivity extends AppCompatActivity {
         });
 
         binding.workEditText.addTextChangedListener(new TextWatcher() {
+            @SuppressLint({ "UseCompatLoadingForDrawables"})
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() != 0) {
                     binding.submitBtn.setEnabled(true);
-                    binding.submitBtn.setBackgroundColor(getResources().getColor(R.color.primary));
+                    binding.submitBtn.setBackground(getDrawable(R.drawable.button_background));
                 } else {
                     binding.submitBtn.setEnabled(false);
-                    binding.submitBtn.setBackgroundColor(getResources().getColor(R.color.lightgray));
+                    binding.submitBtn.setBackground(getDrawable(R.drawable.light_button_background));
                 }
 
             }
 
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() != 0) {
                     binding.submitBtn.setEnabled(true);
-                    binding.submitBtn.setBackgroundColor(getResources().getColor(R.color.primary));
+                    binding.submitBtn.setBackground(getDrawable(R.drawable.button_background));
                 } else {
                     binding.submitBtn.setEnabled(false);
-                    binding.submitBtn.setBackgroundColor(getResources().getColor(R.color.lightgray));
+                    binding.submitBtn.setBackground(getDrawable(R.drawable.light_button_background));
                 }
 
             }
@@ -159,25 +151,27 @@ public class WorkSecondActivity extends AppCompatActivity {
         });
 
         binding.halfWorkEditText.addTextChangedListener(new TextWatcher() {
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() != 0) {
                     binding.submitBtn.setEnabled(true);
-                    binding.submitBtn.setBackgroundColor(getResources().getColor(R.color.primary));
+                    binding.submitBtn.setBackground(getDrawable(R.drawable.button_background));
                 } else {
                     binding.submitBtn.setEnabled(false);
-                    binding.submitBtn.setBackgroundColor(getResources().getColor(R.color.lightgray));
+                    binding.submitBtn.setBackground(getDrawable(R.drawable.light_button_background));
                 }
             }
 
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() != 0) {
                     binding.submitBtn.setEnabled(true);
-                    binding.submitBtn.setBackgroundColor(getResources().getColor(R.color.primary));
+                    binding.submitBtn.setBackground(getDrawable(R.drawable.button_background));
                 } else {
                     binding.submitBtn.setEnabled(false);
-                    binding.submitBtn.setBackgroundColor(getResources().getColor(R.color.lightgray));
+                    binding.submitBtn.setBackground(getDrawable(R.drawable.light_button_background));
                 }
             }
 
@@ -188,26 +182,28 @@ public class WorkSecondActivity extends AppCompatActivity {
         });
 
         binding.leaveReasonEditText.addTextChangedListener(new TextWatcher() {
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() != 0) {
                     binding.submitBtn.setEnabled(true);
-                    binding.submitBtn.setBackgroundColor(getResources().getColor(R.color.primary));
+                    binding.submitBtn.setBackground(getDrawable(R.drawable.button_background));
                 } else {
                     binding.submitBtn.setEnabled(false);
-                    binding.submitBtn.setBackgroundColor(getResources().getColor(R.color.lightgray));
+                    binding.submitBtn.setBackground(getDrawable(R.drawable.light_button_background));
                 }
 
             }
 
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() != 0) {
                     binding.submitBtn.setEnabled(true);
-                    binding.submitBtn.setBackgroundColor(getResources().getColor(R.color.primary));
+                    binding.submitBtn.setBackground(getDrawable(R.drawable.button_background));
                 } else {
                     binding.submitBtn.setEnabled(false);
-                    binding.submitBtn.setBackgroundColor(getResources().getColor(R.color.lightgray));
+                    binding.submitBtn.setBackground(getDrawable(R.drawable.light_button_background));
                 }
             }
 
@@ -260,7 +256,8 @@ public class WorkSecondActivity extends AppCompatActivity {
                     .putString("empId", preferenceManager.getString(Constants.KEY_EMPID))
                     .putString("fullName", fullName)
                     .putString("department", department)
-                    .putString("date", date)
+                    .putString("fromDate", date)
+                    .putString("toDate", date)
                     .putString("present", present)
                     .putString("leaveType", "-")
                     .putString("scopeOfWork", presentWorkText)
@@ -319,7 +316,8 @@ public class WorkSecondActivity extends AppCompatActivity {
                     .putString("empId", preferenceManager.getString(Constants.KEY_EMPID))
                     .putString("fullName", fullName)
                     .putString("department", department)
-                    .putString("date", date)
+                    .putString("fromDate", date)
+                    .putString("toDate", date)
                     .putString("present", "-")
                     .putString("leaveType", leaveType)
                     .putString("scopeOfWork", halfWorkText)
@@ -328,7 +326,12 @@ public class WorkSecondActivity extends AppCompatActivity {
                     .putString("createdAt", formattedDateTime)
                     .build();
 
+            Constraints constraints = new Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .build();
+
             OneTimeWorkRequest myWorkRequest = new OneTimeWorkRequest.Builder(DataSyncWorker.class)
+                    .setConstraints(constraints)
                     .setInputData(inputData)
                     .build();
 

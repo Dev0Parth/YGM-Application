@@ -4,16 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.DatePicker;
 
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.parth.ygm.databinding.ActivityWorkFirstBinding;
 import com.parth.ygm.utilities.Constants;
 import com.parth.ygm.utilities.PreferenceManager;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class WorkFirstActivity extends AppCompatActivity {
 
@@ -40,6 +41,8 @@ public class WorkFirstActivity extends AppCompatActivity {
         binding.nameEditText.setText(preferenceManager.getString(Constants.KEY_NAME));
         binding.nameEditText.setEnabled(false);
 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
         // Get today's date
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -48,15 +51,6 @@ public class WorkFirstActivity extends AppCompatActivity {
 
         binding.dateEditText.setText(day + "/" + (month + 1) + "/" + year);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            binding.datePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
-                @Override
-                public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
-                    selectedDate = i2 + "/" + (i1 + 1) + "/" + i;
-                    binding.dateEditText.setText(selectedDate);
-                }
-            });
-        }
 
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +71,14 @@ public class WorkFirstActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
+        });
+
+        binding.calenderBtn.setOnClickListener(view -> {
+            MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+            builder.setTitleText("SELECT A DATE");
+            final MaterialDatePicker<Long> materialDatePicker = builder.build();
+            materialDatePicker.show(getSupportFragmentManager(), "Date_Picker");
+            materialDatePicker.addOnPositiveButtonClickListener(selection -> binding.dateEditText.setText(simpleDateFormat.format(new Date(materialDatePicker.getHeaderText()))));
         });
 
 

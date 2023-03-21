@@ -41,7 +41,7 @@ public class DataSyncWorker extends Worker {
     @Override
     public Result doWork() {
 
-        String empId, fullName, department, date, present, leaveType, scopeOfWork, scoping, leaveReason, createdAt;
+        String empId, fullName, department, fromDate, toDate, present, leaveType, scopeOfWork, scoping, leaveReason, createdAt;
 
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyEmployeeData", Context.MODE_PRIVATE);
 
@@ -49,7 +49,8 @@ public class DataSyncWorker extends Worker {
             empId = getInputData().getString("empId");
             fullName = getInputData().getString("fullName");
             department = getInputData().getString("department");
-            date = getInputData().getString("date");
+            fromDate = getInputData().getString("fromDate");
+            toDate = getInputData().getString("toDate");
             present = getInputData().getString("present");
             leaveType = getInputData().getString("leaveType");
             scopeOfWork = getInputData().getString("scopeOfWork");
@@ -62,7 +63,8 @@ public class DataSyncWorker extends Worker {
             empId = sharedPreferences.getString("empId", "");
             fullName = sharedPreferences.getString("fullName", "");
             department = sharedPreferences.getString("department", "");
-            date = sharedPreferences.getString("date", "");
+            fromDate = sharedPreferences.getString("fromDate", "");
+            toDate = sharedPreferences.getString("toDate", "");
             present = sharedPreferences.getString("present", "");
             leaveType = sharedPreferences.getString("leaveType", "");
             scopeOfWork = sharedPreferences.getString("scopeOfWork", "");
@@ -76,9 +78,9 @@ public class DataSyncWorker extends Worker {
 
 
         if (isInternetAvailable()) {
-            sendDataToServer(empId, fullName, department, date, present, leaveType, scopeOfWork, scoping, leaveReason, createdAt);
+            sendDataToServer(empId, fullName, department, fromDate, toDate, present, leaveType, scopeOfWork, scoping, leaveReason, createdAt);
         } else {
-            saveDataToSharedPreferences(empId, fullName, department, date, present, leaveType, scopeOfWork, scoping, leaveReason, createdAt);
+            saveDataToSharedPreferences(empId, fullName, department, fromDate, toDate, present, leaveType, scopeOfWork, scoping, leaveReason, createdAt);
         }
 
         return Result.success();
@@ -92,13 +94,13 @@ public class DataSyncWorker extends Worker {
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 
-    private void sendDataToServer(String empId, String fullName, String department, String date, String present, String leaveType, String scopeOfWork, String scoping, String leaveReason, String createdAt) {
+    private void sendDataToServer(String empId, String fullName, String department, String fromDate, String toDate, String present, String leaveType, String scopeOfWork, String scoping, String leaveReason, String createdAt) {
 
 
         Call<ResponseBody> call = RetrofitClient
                 .getInstance()
                 .getAPI()
-                .submitData(empId, fullName, department, date, present, leaveType, scopeOfWork, scoping, leaveReason, createdAt);
+                .submitData(empId, fullName, department, fromDate, toDate, present, leaveType, scopeOfWork, scoping, leaveReason, createdAt);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -113,13 +115,14 @@ public class DataSyncWorker extends Worker {
 
     }
 
-    private void saveDataToSharedPreferences(String empId, String fullName, String department, String date, String present, String leaveType, String scopeOfWork, String scoping, String leaveReason, String createdAt) {
+    private void saveDataToSharedPreferences(String empId, String fullName, String department, String fromDate, String toDate, String present, String leaveType, String scopeOfWork, String scoping, String leaveReason, String createdAt) {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyEmployeeData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("empId", empId);
         editor.putString("fullName", fullName);
         editor.putString("department", department);
-        editor.putString("date", date);
+        editor.putString("fromDate", fromDate);
+        editor.putString("toDate", toDate);
         editor.putString("present", present);
         editor.putString("leaveType", leaveType);
         editor.putString("scopeOfWork", scopeOfWork);

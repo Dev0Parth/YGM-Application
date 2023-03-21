@@ -1,22 +1,32 @@
 package com.parth.ygm.models;
 
 public class EmployeeData {
-    private String empId, fullName, department, date, present, leaveType, scopeOfWork, scoping, leaveReason, createdAt;
+    private String empId, fullName, department, fromDate, toDate, present, leaveType, scopeOfWork, scoping, leaveReason, createdAt, errorCode;
 
     public EmployeeData() {
     }
 
-    public EmployeeData(String empId, String fullName, String department, String date, String present, String leaveType, String scopeOfWork, String scoping, String leaveReason, String createdAt) {
+    public EmployeeData(String empId, String fullName, String department, String fromDate, String toDate, String present, String leaveType, String scopeOfWork, String scoping, String leaveReason, String createdAt, String errorCode) {
         this.empId = empId;
         this.fullName = fullName;
         this.department = department;
-        this.date = date;
+        this.fromDate = fromDate;
+        this.toDate = toDate;
         this.present = present;
         this.leaveType = leaveType;
         this.scopeOfWork = scopeOfWork;
         this.scoping = scoping;
         this.leaveReason = leaveReason;
         this.createdAt = createdAt;
+        this.errorCode = errorCode;
+    }
+
+    public String getErrorCode() {
+        return errorCode;
+    }
+
+    public void setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
     }
 
     public String getEmpId() {
@@ -43,12 +53,20 @@ public class EmployeeData {
         this.department = department;
     }
 
-    public String getDate() {
-        return date;
+    public String getFromDate() {
+        return fromDate;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setFromDate(String fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public String getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(String toDate) {
+        this.toDate = toDate;
     }
 
     public String getPresent() {

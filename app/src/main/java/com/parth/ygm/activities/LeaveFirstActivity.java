@@ -17,6 +17,7 @@ import com.parth.ygm.utilities.PreferenceManager;
 import com.parth.ygm.utilities.RetrofitClient;
 
 import java.util.List;
+import java.util.Objects;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -54,13 +55,19 @@ public class LeaveFirstActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<EmployeeData>> call, Response<List<EmployeeData>> response) {
                 List<EmployeeData> data = response.body();
-                LeaveAdapter adapter = new LeaveAdapter(data);
-                binding.leaveRV.setAdapter(adapter);
+                if (Objects.equals(data.get(0).getErrorCode(), "404")) {
+                    binding.noLeavesTV.setVisibility(View.VISIBLE);
+                } else {
+                    binding.noLeavesTV.setVisibility(View.GONE);
+                    LeaveAdapter adapter = new LeaveAdapter(data);
+                    binding.leaveRV.setAdapter(adapter);
+                }
+
             }
 
             @Override
             public void onFailure(Call<List<EmployeeData>> call, Throwable t) {
-                Toast.makeText(LeaveFirstActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LeaveFirstActivity.this, "No previous leaves found!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -69,6 +76,13 @@ public class LeaveFirstActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), LeaveSecondActivity.class));
                 finish();
+            }
+        });
+
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
             }
         });
     }

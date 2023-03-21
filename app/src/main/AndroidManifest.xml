@@ -16,9 +16,7 @@
         android:theme="@style/Theme.YGM"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".LeaveSecondActivity"
-            android:exported="false" />
+
         <activity
             android:name=".activities.SplashScreenActivity"
             android:exported="true">
@@ -42,6 +40,9 @@
             android:exported="false" />
         <activity
             android:name=".activities.LeaveFirstActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.LeaveSecondActivity"
             android:exported="false" />
     </application>
 

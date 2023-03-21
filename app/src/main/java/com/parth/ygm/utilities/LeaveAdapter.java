@@ -1,5 +1,6 @@
 package com.parth.ygm.utilities;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.parth.ygm.R;
 import com.parth.ygm.models.EmployeeData;
 
 import java.util.List;
+import java.util.Objects;
 
 public class LeaveAdapter extends RecyclerView.Adapter<LeaveAdapter.holder> {
 
@@ -29,12 +31,13 @@ public class LeaveAdapter extends RecyclerView.Adapter<LeaveAdapter.holder> {
         return new holder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull holder holder, int position) {
         holder.fullName.setText(data.get(position).getFullName());
         holder.date.setText(data.get(position).getCreatedAt());
-        holder.fromDate.setText(data.get(position).getDate());
-        holder.toDate.setText(data.get(position).getDate());
+        holder.fromDate.setText(data.get(position).getFromDate());
+        holder.toDate.setText(data.get(position).getToDate());
         holder.leaveReason.setText(data.get(position).getLeaveReason());
     }
 
