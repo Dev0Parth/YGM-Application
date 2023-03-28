@@ -32,18 +32,6 @@
         <activity
             android:name=".activities.HomeActivity"
             android:exported="false" />
-        <activity
-            android:name=".activities.WorkFirstActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.WorkSecondActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.LeaveFirstActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.LeaveSecondActivity"
-            android:exported="false" />
     </application>
 
 </manifest>

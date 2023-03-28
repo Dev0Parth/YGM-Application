@@ -1,6 +1,8 @@
 package com.parth.ygm.utilities;
 
 public class Constants {
+
+    public static final String KEY_DATA_TYPE = "work";
     public static final String KEY_PHONE = "phoneNumber";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_EMPID = "empId";

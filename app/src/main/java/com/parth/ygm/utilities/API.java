@@ -1,6 +1,7 @@
 package com.parth.ygm.utilities;
 
 import com.parth.ygm.models.EmployeeData;
+import com.parth.ygm.models.LeavesData;
 import com.parth.ygm.models.User;
 
 import java.util.List;
@@ -15,17 +16,27 @@ import retrofit2.http.POST;
 public interface API {
 
     @FormUrlEncoded
-    @POST("getEmployeeData.php")
-    Call<ResponseBody> submitData(
+    @POST("addWork.php")
+    Call<ResponseBody> addWork(
+            @Field("empId") String empId,
+            @Field("fullName") String fullName,
+            @Field("department") String department,
+            @Field("date") String date,
+            @Field("firstHalfWork") String firstHalfWork,
+            @Field("secondHalfWork") String secondHalfWork,
+            @Field("scoping") String scoping,
+            @Field("createdAt") String createdAt
+    );
+
+    @FormUrlEncoded
+    @POST("addLeave.php")
+    Call<ResponseBody> addLeave(
             @Field("empId") String empId,
             @Field("fullName") String fullName,
             @Field("department") String department,
             @Field("fromDate") String fromDate,
             @Field("toDate") String toDate,
-            @Field("present") String present,
             @Field("leaveType") String leaveType,
-            @Field("scopeOfWork") String scopeOfWork,
-            @Field("scoping") String scoping,
             @Field("leaveReason") String leaveReason,
             @Field("createdAt") String createdAt
     );
@@ -39,8 +50,9 @@ public interface API {
 
 
     @FormUrlEncoded
-    @POST("getLeaves.php")
-    Call<List<EmployeeData>> getLeaves(
-            @Field("empId") String empId
+    @POST("fetchLeaves.php")
+    Call<List<LeavesData>> fetchLeaves(
+            @Field("empId") String empId,
+            @Field("date") String date
     );
 }

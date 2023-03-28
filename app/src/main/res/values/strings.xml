@@ -19,7 +19,7 @@
     <string name="second_half">Second Half</string>
     <string name="first_half">First Half</string>
     <string name="scope_of_work">scope of work:</string>
-    <string name="scoping">scoping:</string>
+    <string name="scoping">scoping</string>
     <string name="back">Back</string>
     <string name="your_data_has_been_saved">Your data has been saved.</string>
     <string name="success">Success</string>
@@ -36,4 +36,7 @@
     <string name="more_than_one_day">More than one day</string>
     <string name="no_previous_leaves_found">No previous leaves found!</string>
     <string name="employee_id">Employee ID</string>
+    <string name="add_leave">Add Leave</string>
+    <string name="choose_leave_type">choose leave type</string>
+    <string name="today_s_your_full_day_leave">Today\'s your full day leave</string>
 </resources>
