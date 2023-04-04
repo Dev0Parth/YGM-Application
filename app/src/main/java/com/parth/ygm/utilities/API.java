@@ -23,6 +23,7 @@ public interface API {
             @Field("fullName") String fullName,
             @Field("department") String department,
             @Field("date") String date,
+            @Field("status") String status,
             @Field("firstHalfWork") String firstHalfWork,
             @Field("secondHalfWork") String secondHalfWork,
             @Field("scoping") String scoping,
@@ -37,6 +38,7 @@ public interface API {
             @Field("department") String department,
             @Field("fromDate") String fromDate,
             @Field("toDate") String toDate,
+            @Field("status") String status,
             @Field("leaveType") String leaveType,
             @Field("leaveReason") String leaveReason,
             @Field("createdAt") String createdAt

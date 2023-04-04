@@ -29,7 +29,7 @@ public class LeaveSyncWorker extends Worker {
     @Override
     public Result doWork() {
 
-        String empId, fullName, department, fromDate, toDate, leaveType, leaveReason, createdAt;
+        String empId, fullName, department, fromDate, toDate, status, leaveType, leaveReason, createdAt;
 
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyEmployeeLeaves", Context.MODE_PRIVATE);
 
@@ -39,6 +39,7 @@ public class LeaveSyncWorker extends Worker {
             department = getInputData().getString("department");
             fromDate = getInputData().getString("fromDate");
             toDate = getInputData().getString("toDate");
+            status = getInputData().getString("status");
             leaveType = getInputData().getString("leaveType");
             leaveReason = getInputData().getString("leaveReason");
             createdAt = getInputData().getString("createdAt");
@@ -50,6 +51,7 @@ public class LeaveSyncWorker extends Worker {
             department = sharedPreferences.getString("department", "");
             fromDate = sharedPreferences.getString("fromDate", "");
             toDate = sharedPreferences.getString("toDate", "");
+            status = sharedPreferences.getString("status", "");
             leaveType = sharedPreferences.getString("leaveType", "");
             leaveReason = sharedPreferences.getString("leaveReason", "");
             createdAt = sharedPreferences.getString("createdAt", "");
@@ -60,9 +62,9 @@ public class LeaveSyncWorker extends Worker {
 
 
         if (isInternetAvailable()) {
-            sendDataToServer(empId, fullName, department, fromDate, toDate, leaveType, leaveReason, createdAt);
+            sendDataToServer(empId, fullName, department, fromDate, toDate, status, leaveType, leaveReason, createdAt);
         } else {
-            saveDataToSharedPreferences(empId, fullName, department, fromDate, toDate, leaveType, leaveReason, createdAt);
+            saveDataToSharedPreferences(empId, fullName, department, fromDate, toDate, status, leaveType, leaveReason, createdAt);
         }
 
 
@@ -77,13 +79,13 @@ public class LeaveSyncWorker extends Worker {
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 
-    private void sendDataToServer(String empId, String fullName, String department, String fromDate, String toDate, String leaveType, String leaveReason, String createdAt) {
+    private void sendDataToServer(String empId, String fullName, String department, String fromDate, String toDate, String status, String leaveType, String leaveReason, String createdAt) {
 
 
         Call<ResponseBody> call = RetrofitClient
                 .getInstance()
                 .getAPI()
-                .addLeave(empId, fullName, department, fromDate, toDate, leaveType, leaveReason, createdAt);
+                .addLeave(empId, fullName, department, fromDate, toDate, status, leaveType, leaveReason, createdAt);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -98,7 +100,7 @@ public class LeaveSyncWorker extends Worker {
 
     }
 
-    private void saveDataToSharedPreferences(String empId, String fullName, String department, String fromDate, String toDate, String leaveType, String leaveReason, String createdAt) {
+    private void saveDataToSharedPreferences(String empId, String fullName, String department, String fromDate, String toDate, String status, String leaveType, String leaveReason, String createdAt) {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyEmployeeLeaves", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("empId", empId);
@@ -106,6 +108,7 @@ public class LeaveSyncWorker extends Worker {
         editor.putString("department", department);
         editor.putString("fromDate", fromDate);
         editor.putString("toDate", toDate);
+        editor.putString("status", status);
         editor.putString("leaveType", leaveType);
         editor.putString("leaveReason", leaveReason);
         editor.putString("createdAt", createdAt);

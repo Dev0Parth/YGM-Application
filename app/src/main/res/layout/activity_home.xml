@@ -412,10 +412,11 @@
                     android:theme="@style/interMedium"
                     android:visibility="gone" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/submitBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@color/primary"
                     android:text="@string/submit"
                     android:textSize="@dimen/_14ssp"
                     android:theme="@style/interMedium" />

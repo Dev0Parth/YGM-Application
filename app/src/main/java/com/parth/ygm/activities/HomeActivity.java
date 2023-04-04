@@ -13,9 +13,12 @@ import androidx.work.WorkManager;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -53,9 +56,11 @@ public class HomeActivity extends AppCompatActivity {
 
     private String[] options = {"First Half", "Second Half", "Full Leave"};
 
-    private String empId, department, formattedDateTime, fullName, firstHalfWork, secondHalfWork, scoping, date, fromDate, toDate, selectedItem, leaveReason;
+    private String empId, department, formattedDateTime, fullName, firstHalfWork, secondHalfWork, scoping, date, fromDate, toDate, selectedItem, leaveReason, status;
 
     private String fetchedLeaveType = "";
+
+    private DateTimeFormatter formatter = null;
 
     PreferenceManager preferenceManager;
     private static final int INTERVAL = 3000;
@@ -80,8 +85,16 @@ public class HomeActivity extends AppCompatActivity {
 
         preferenceManager.putString(Constants.KEY_DATA_TYPE, "work");
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            binding.submitBtn.setBackgroundColor(getColor(R.color.lightgray));
+            binding.submitBtn.setEnabled(false);
+        }
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        }
 
         // Get today's date
         Date dateObj = new Date();
@@ -93,11 +106,13 @@ public class HomeActivity extends AppCompatActivity {
         binding.dateEditText.setText(formattedDate);
         binding.fromDateEditText.setText(formattedDate);
         binding.toDateEditText.setText(formattedDate);
-        LocalDate startDate =  LocalDate.parse(formattedDate, formatter);
-        LocalDate endDate = LocalDate.parse(formattedDate, formatter);
-
-        long totalDays = ChronoUnit.DAYS.between(startDate, endDate);
-        binding.totalDayCount.setText(String.valueOf(totalDays + 1));
+        LocalDate startDate = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            startDate = LocalDate.parse(formattedDate, formatter);
+            LocalDate endDate = LocalDate.parse(formattedDate, formatter);
+            long totalDays = ChronoUnit.DAYS.between(startDate, endDate);
+            binding.totalDayCount.setText(String.valueOf(totalDays + 1));
+        }
 
         binding.dateLayout.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,11 +142,15 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onPositiveButtonClick(Long selection) {
                         binding.fromDateEditText.setText(simpleDateFormat.format(new Date(materialDatePicker.getHeaderText())));
-                        LocalDate startDate =  LocalDate.parse(binding.fromDateEditText.getText().toString(), formatter);
-                        LocalDate endDate = LocalDate.parse(binding.toDateEditText.getText().toString(), formatter);
+                        LocalDate startDate = null;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                            startDate = LocalDate.parse(binding.fromDateEditText.getText().toString(), formatter);
+                            LocalDate endDate = LocalDate.parse(binding.toDateEditText.getText().toString(), formatter);
 
-                        long totalDays = ChronoUnit.DAYS.between(startDate, endDate);
-                        binding.totalDayCount.setText(String.valueOf(totalDays + 1));
+                            long totalDays = ChronoUnit.DAYS.between(startDate, endDate);
+                            binding.totalDayCount.setText(String.valueOf(totalDays + 1));
+                        }
+
                     }
                 });
             }
@@ -148,11 +167,15 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onPositiveButtonClick(Long selection) {
                         binding.toDateEditText.setText(simpleDateFormat.format(new Date(materialDatePicker.getHeaderText())));
-                        LocalDate startDate =  LocalDate.parse(binding.fromDateEditText.getText().toString(), formatter);
-                        LocalDate endDate = LocalDate.parse(binding.toDateEditText.getText().toString(), formatter);
+                        LocalDate startDate = null;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                            startDate = LocalDate.parse(binding.fromDateEditText.getText().toString(), formatter);
+                            LocalDate endDate = LocalDate.parse(binding.toDateEditText.getText().toString(), formatter);
 
-                        long totalDays = ChronoUnit.DAYS.between(startDate, endDate);
-                        binding.totalDayCount.setText(String.valueOf(totalDays + 1));
+                            long totalDays = ChronoUnit.DAYS.between(startDate, endDate);
+                            binding.totalDayCount.setText(String.valueOf(totalDays + 1));
+                        }
+
                     }
                 });
 
@@ -171,6 +194,7 @@ public class HomeActivity extends AppCompatActivity {
                 binding.secondHalfLayout.setVisibility(View.GONE);
                 binding.scopingLayout.setVisibility(View.GONE);
                 binding.todayFullLeaveLayout.setVisibility(View.GONE);
+                binding.backBtn.setVisibility(View.VISIBLE);
                 preferenceManager.putString(Constants.KEY_DATA_TYPE, "leave");
             }
         });
@@ -228,8 +252,6 @@ public class HomeActivity extends AppCompatActivity {
                                 addWork();
                             }
                         }
-
-
                     }
 
                 } else if (Objects.equals(preferenceManager.getString(Constants.KEY_DATA_TYPE), "leave")) {
@@ -259,6 +281,7 @@ public class HomeActivity extends AppCompatActivity {
                 binding.firstHalfLayout.setVisibility(View.VISIBLE);
                 binding.secondHalfLayout.setVisibility(View.VISIBLE);
                 binding.scopingLayout.setVisibility(View.VISIBLE);
+                binding.backBtn.setVisibility(View.GONE);
                 preferenceManager.putString(Constants.KEY_DATA_TYPE, "work");
 
                 fetchLeaves(formattedDate);
@@ -315,18 +338,22 @@ public class HomeActivity extends AppCompatActivity {
                         binding.scopingLayout.setVisibility(View.VISIBLE);
                         binding.todayFullLeaveLayout.setVisibility(View.GONE);
                         fetchedLeaveType = "first half";
+
+
                     } else if (Objects.equals(data.get(0).getLeaveType(), "Second Half")) {
                         binding.firstHalfLayout.setVisibility(View.VISIBLE);
                         binding.secondHalfLayout.setVisibility(View.GONE);
                         binding.scopingLayout.setVisibility(View.VISIBLE);
                         binding.todayFullLeaveLayout.setVisibility(View.GONE);
                         fetchedLeaveType = "second half";
+
                     } else if (Objects.equals(data.get(0).getLeaveType(), "Full Leave")) {
                         binding.firstHalfLayout.setVisibility(View.GONE);
                         binding.secondHalfLayout.setVisibility(View.GONE);
                         binding.scopingLayout.setVisibility(View.GONE);
                         binding.todayFullLeaveLayout.setVisibility(View.VISIBLE);
                         fetchedLeaveType = "full leave";
+
                     }
                 } else {
                     fetchedLeaveType = "no leaves";
@@ -369,6 +396,12 @@ public class HomeActivity extends AppCompatActivity {
             scoping = binding.scopingEditText.getText().toString();
         }
 
+        if (!Objects.equals(firstHalfWork, "-") && !Objects.equals(secondHalfWork, "-")) {
+            status = "p";
+        } else {
+            status = "hp";
+        }
+
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             LocalDateTime localDateTime = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
@@ -380,6 +413,7 @@ public class HomeActivity extends AppCompatActivity {
                 .putString("fullName", fullName)
                 .putString("department", department)
                 .putString("date", date)
+                .putString("status", status)
                 .putString("firstHalfWork", firstHalfWork)
                 .putString("secondHalfWork", secondHalfWork)
                 .putString("scoping", scoping)
@@ -433,12 +467,21 @@ public class HomeActivity extends AppCompatActivity {
             formattedDateTime = localDateTime.format(formatter);
         }
 
+        if (Objects.equals(selectedItem, "First Half") || Objects.equals(selectedItem, "Second Half")) {
+            status = "hp";
+        } else if (Objects.equals(selectedItem, "Full Leave")) {
+            status = "a";
+        } else {
+            status = "-";
+        }
+
         Data inputData = new Data.Builder()
                 .putString("empId",empId)
                 .putString("fullName", fullName)
                 .putString("department", department)
                 .putString("fromDate", fromDate)
                 .putString("toDate", toDate)
+                .putString("status", status)
                 .putString("leaveType", selectedItem)
                 .putString("leaveReason", leaveReason)
                 .putString("createdAt", formattedDateTime)

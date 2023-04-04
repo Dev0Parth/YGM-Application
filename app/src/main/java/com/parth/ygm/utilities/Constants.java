@@ -11,4 +11,5 @@ public class Constants {
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_IS_SIGNED_IN = "isSignedIn";
     public static final String KEY_PREFERENCE_NAME = "YGMPreferenceManager";
+
 }
