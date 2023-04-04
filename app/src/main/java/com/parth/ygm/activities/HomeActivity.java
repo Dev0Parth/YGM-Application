@@ -23,8 +23,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.parth.ygm.R;
 import com.parth.ygm.databinding.ActivityHomeBinding;
+import com.parth.ygm.models.LeaveCount;
 import com.parth.ygm.models.LeavesData;
 import com.parth.ygm.utilities.Constants;
 import com.parth.ygm.utilities.LeaveSyncWorker;
@@ -33,8 +35,10 @@ import com.parth.ygm.utilities.PreferenceManager;
 import com.parth.ygm.utilities.RetrofitClient;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -77,16 +81,23 @@ public class HomeActivity extends AppCompatActivity {
         preferenceManager.putString(Constants.KEY_DATA_TYPE, "work");
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         // Get today's date
         Date dateObj = new Date();
         String formattedDate = simpleDateFormat.format(dateObj);
 
+        countLeaves();
         fetchLeaves(formattedDate);
 
         binding.dateEditText.setText(formattedDate);
         binding.fromDateEditText.setText(formattedDate);
         binding.toDateEditText.setText(formattedDate);
+        LocalDate startDate =  LocalDate.parse(formattedDate, formatter);
+        LocalDate endDate = LocalDate.parse(formattedDate, formatter);
+
+        long totalDays = ChronoUnit.DAYS.between(startDate, endDate);
+        binding.totalDayCount.setText(String.valueOf(totalDays + 1));
 
         binding.dateLayout.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +106,13 @@ public class HomeActivity extends AppCompatActivity {
                 builder.setTitleText("SELECT A DATE");
                 final MaterialDatePicker<Long> materialDatePicker = builder.build();
                 materialDatePicker.show(getSupportFragmentManager(), "Date_Picker");
-                materialDatePicker.addOnPositiveButtonClickListener(selection -> binding.dateEditText.setText(simpleDateFormat.format(new Date(materialDatePicker.getHeaderText()))));
+                materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+                    @Override
+                    public void onPositiveButtonClick(Long selection) {
+                        binding.dateEditText.setText(simpleDateFormat.format(new Date(materialDatePicker.getHeaderText())));
+                        fetchLeaves(binding.dateEditText.getText().toString());
+                    }
+                });
             }
         });
 
@@ -106,7 +123,17 @@ public class HomeActivity extends AppCompatActivity {
                 builder.setTitleText("SELECT A DATE");
                 final MaterialDatePicker<Long> materialDatePicker = builder.build();
                 materialDatePicker.show(getSupportFragmentManager(), "Date_Picker");
-                materialDatePicker.addOnPositiveButtonClickListener(selection -> binding.fromDateEditText.setText(simpleDateFormat.format(new Date(materialDatePicker.getHeaderText()))));
+                materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+                    @Override
+                    public void onPositiveButtonClick(Long selection) {
+                        binding.fromDateEditText.setText(simpleDateFormat.format(new Date(materialDatePicker.getHeaderText())));
+                        LocalDate startDate =  LocalDate.parse(binding.fromDateEditText.getText().toString(), formatter);
+                        LocalDate endDate = LocalDate.parse(binding.toDateEditText.getText().toString(), formatter);
+
+                        long totalDays = ChronoUnit.DAYS.between(startDate, endDate);
+                        binding.totalDayCount.setText(String.valueOf(totalDays + 1));
+                    }
+                });
             }
         });
 
@@ -117,7 +144,19 @@ public class HomeActivity extends AppCompatActivity {
                 builder.setTitleText("SELECT A DATE");
                 final MaterialDatePicker<Long> materialDatePicker = builder.build();
                 materialDatePicker.show(getSupportFragmentManager(), "Date_Picker");
-                materialDatePicker.addOnPositiveButtonClickListener(selection -> binding.toDateEditText.setText(simpleDateFormat.format(new Date(materialDatePicker.getHeaderText()))));
+                materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+                    @Override
+                    public void onPositiveButtonClick(Long selection) {
+                        binding.toDateEditText.setText(simpleDateFormat.format(new Date(materialDatePicker.getHeaderText())));
+                        LocalDate startDate =  LocalDate.parse(binding.fromDateEditText.getText().toString(), formatter);
+                        LocalDate endDate = LocalDate.parse(binding.toDateEditText.getText().toString(), formatter);
+
+                        long totalDays = ChronoUnit.DAYS.between(startDate, endDate);
+                        binding.totalDayCount.setText(String.valueOf(totalDays + 1));
+                    }
+                });
+
+
             }
         });
 
@@ -127,9 +166,11 @@ public class HomeActivity extends AppCompatActivity {
                 binding.leaveTypeLayout.setVisibility(View.VISIBLE);
                 binding.reasonLayout.setVisibility(View.VISIBLE);
                 binding.fromToDateLL.setVisibility(View.VISIBLE);
+                binding.totalDaysLL.setVisibility(View.VISIBLE);
                 binding.firstHalfLayout.setVisibility(View.GONE);
                 binding.secondHalfLayout.setVisibility(View.GONE);
                 binding.scopingLayout.setVisibility(View.GONE);
+                binding.todayFullLeaveLayout.setVisibility(View.GONE);
                 preferenceManager.putString(Constants.KEY_DATA_TYPE, "leave");
             }
         });
@@ -207,8 +248,52 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.leaveTypeLayout.setVisibility(View.GONE);
+                binding.reasonLayout.setVisibility(View.GONE);
+                binding.fromToDateLL.setVisibility(View.GONE);
+                binding.totalDaysLL.setVisibility(View.GONE);
+                binding.firstHalfLayout.setVisibility(View.VISIBLE);
+                binding.secondHalfLayout.setVisibility(View.VISIBLE);
+                binding.scopingLayout.setVisibility(View.VISIBLE);
+                preferenceManager.putString(Constants.KEY_DATA_TYPE, "work");
+
+                fetchLeaves(formattedDate);
+            }
+        });
     }
 
+
+    private void countLeaves() {
+        empId = preferenceManager.getString(Constants.KEY_EMPID);
+
+        Call<List<LeaveCount>> call = RetrofitClient
+                .getInstance()
+                .getAPI()
+                .countLeaves(empId);
+
+        call.enqueue(new Callback<List<LeaveCount>>() {
+            @Override
+            public void onResponse(Call<List<LeaveCount>> call, Response<List<LeaveCount>> response) {
+                List<LeaveCount> data = response.body();
+
+                if (data.get(0).getFullLeave() != null || data.get(0).getHalfLeave() != null) {
+
+                    double totalleaves = Integer.parseInt(data.get(0).getFullLeave()) + Float.parseFloat(data.get(0).getHalfLeave());
+
+                    binding.totalLeaveCount.setText(String.valueOf(totalleaves));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<LeaveCount>> call, Throwable t) {
+
+            }
+        });
+    }
 
     private void fetchLeaves(String todayDate) {
 
@@ -224,15 +309,19 @@ public class HomeActivity extends AppCompatActivity {
             public void onResponse(Call<List<LeavesData>> call, Response<List<LeavesData>> response) {
                 List<LeavesData> data = response.body();
                 if (data.get(0).getLeaveType() != null) {
-                    if (Objects.equals(data.get(0).getLeaveType(), "first half")) {
+                    if (Objects.equals(data.get(0).getLeaveType(), "First Half")) {
                         binding.firstHalfLayout.setVisibility(View.GONE);
                         binding.secondHalfLayout.setVisibility(View.VISIBLE);
+                        binding.scopingLayout.setVisibility(View.VISIBLE);
+                        binding.todayFullLeaveLayout.setVisibility(View.GONE);
                         fetchedLeaveType = "first half";
-                    } else if (Objects.equals(data.get(0).getLeaveType(), "second half")) {
+                    } else if (Objects.equals(data.get(0).getLeaveType(), "Second Half")) {
                         binding.firstHalfLayout.setVisibility(View.VISIBLE);
                         binding.secondHalfLayout.setVisibility(View.GONE);
+                        binding.scopingLayout.setVisibility(View.VISIBLE);
+                        binding.todayFullLeaveLayout.setVisibility(View.GONE);
                         fetchedLeaveType = "second half";
-                    } else if (Objects.equals(data.get(0).getLeaveType(), "full leave")) {
+                    } else if (Objects.equals(data.get(0).getLeaveType(), "Full Leave")) {
                         binding.firstHalfLayout.setVisibility(View.GONE);
                         binding.secondHalfLayout.setVisibility(View.GONE);
                         binding.scopingLayout.setVisibility(View.GONE);
@@ -241,6 +330,10 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 } else {
                     fetchedLeaveType = "no leaves";
+                    binding.firstHalfLayout.setVisibility(View.VISIBLE);
+                    binding.secondHalfLayout.setVisibility(View.VISIBLE);
+                    binding.scopingLayout.setVisibility(View.VISIBLE);
+                    binding.todayFullLeaveLayout.setVisibility(View.GONE);
                 }
             }
 

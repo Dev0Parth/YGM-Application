@@ -1,12 +1,12 @@
 package com.parth.ygm.models;
 
 public class LeavesData {
-    String empId, department, fullName, fromDate, toDate, leaveType, leaveReason, createdAt;
+    String empId, department, fullName, fromDate, toDate, leaveType, leaveReason, createdAt, half_leaves, full_leaves;
 
     public LeavesData() {
     }
 
-    public LeavesData(String empId, String department, String fullName, String fromDate, String toDate, String leaveType, String leaveReason, String createdAt) {
+    public LeavesData(String empId, String department, String fullName, String fromDate, String toDate, String leaveType, String leaveReason, String createdAt, String half_leaves, String full_leaves) {
         this.empId = empId;
         this.department = department;
         this.fullName = fullName;
@@ -15,6 +15,8 @@ public class LeavesData {
         this.leaveType = leaveType;
         this.leaveReason = leaveReason;
         this.createdAt = createdAt;
+        this.half_leaves = half_leaves;
+        this.full_leaves = full_leaves;
     }
 
     public String getEmpId() {
@@ -79,5 +81,21 @@ public class LeavesData {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getHalf_leaves() {
+        return half_leaves;
+    }
+
+    public void setHalf_leaves(String half_leaves) {
+        this.half_leaves = half_leaves;
+    }
+
+    public String getFull_leaves() {
+        return full_leaves;
+    }
+
+    public void setFull_leaves(String full_leaves) {
+        this.full_leaves = full_leaves;
     }
 }

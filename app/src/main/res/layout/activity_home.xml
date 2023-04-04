@@ -105,6 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
+                    android:orientation="vertical"
                     android:gravity="center">
 
                     <com.google.android.material.button.MaterialButton
@@ -114,6 +115,25 @@
                         android:text="@string/add_leave"
                         android:textSize="@dimen/_12ssp"
                         android:theme="@style/interMedium" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:theme="@style/interRegular"
+                            android:text="@string/total_leave_s" />
+
+                        <TextView
+                            android:id="@+id/totalLeaveCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_2sdp"
+                            android:theme="@style/interRegular" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -221,8 +241,33 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/totalDaysLL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fromToDateLL">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/total_day_s"
+                    android:theme="@style/interRegular" />
+
+                <TextView
+                    android:id="@+id/totalDayCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:theme="@style/interRegular" />
+
+            </LinearLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/firstHalfLayout"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 app:errorEnabled="true"
@@ -232,7 +277,7 @@
                 android:hint="@string/first_half"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fromToDateLL">
+                app:layout_constraintTop_toBottomOf="@+id/totalDaysLL">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/firstHalfWorkEditText"

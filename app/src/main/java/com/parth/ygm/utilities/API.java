@@ -1,6 +1,7 @@
 package com.parth.ygm.utilities;
 
 import com.parth.ygm.models.EmployeeData;
+import com.parth.ygm.models.LeaveCount;
 import com.parth.ygm.models.LeavesData;
 import com.parth.ygm.models.User;
 
@@ -50,9 +51,15 @@ public interface API {
 
 
     @FormUrlEncoded
-    @POST("fetchLeaves.php")
+    @POST("checkLeave.php")
     Call<List<LeavesData>> fetchLeaves(
             @Field("empId") String empId,
             @Field("date") String date
+    );
+
+    @FormUrlEncoded
+    @POST("countLeaves.php")
+    Call<List<LeaveCount>> countLeaves(
+            @Field("empId") String empId
     );
 }

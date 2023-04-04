@@ -7,7 +7,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-    public static final String BASE_URL = "http://192.168.1.221/ygmAPI/";
+    public static final String BASE_URL = "http://192.168.254.177/ygmAPI/";
     private static RetrofitClient mInstance;
     private Retrofit retrofit;
 

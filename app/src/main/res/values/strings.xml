@@ -39,4 +39,6 @@
     <string name="add_leave">Add Leave</string>
     <string name="choose_leave_type">choose leave type</string>
     <string name="today_s_your_full_day_leave">Today\'s your full day leave</string>
+    <string name="total_leave_s">total leave(s):</string>
+    <string name="total_day_s">total day(s):</string>
 </resources>
