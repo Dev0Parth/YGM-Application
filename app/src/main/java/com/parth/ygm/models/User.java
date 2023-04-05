@@ -1,18 +1,16 @@
 package com.parth.ygm.models;
 
 public class User {
-    String empId, department, name, email, phone, password, created_At;
+    String empId, department, name, phone, created_At;
 
     public User() {
     }
 
-    public User(String empId, String department, String name, String email, String phone, String password, String created_At) {
+    public User(String empId, String department, String name, String phone, String created_At) {
         this.empId = empId;
         this.department = department;
         this.name = name;
-        this.email = email;
         this.phone = phone;
-        this.password = password;
         this.created_At = created_At;
     }
 
@@ -40,28 +38,12 @@ public class User {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPhone() {
         return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getCreated_At() {

@@ -47,8 +47,7 @@ public interface API {
     @FormUrlEncoded
     @POST("login.php")
     Call<User> login(
-            @Field("username") String username,
-            @Field("password") String password
+            @Field("androidId") String androidId
     );
 
 

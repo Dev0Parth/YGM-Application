@@ -85,11 +85,6 @@ public class HomeActivity extends AppCompatActivity {
 
         preferenceManager.putString(Constants.KEY_DATA_TYPE, "work");
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.submitBtn.setBackgroundColor(getColor(R.color.lightgray));
-            binding.submitBtn.setEnabled(false);
-        }
-
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -195,6 +190,7 @@ public class HomeActivity extends AppCompatActivity {
                 binding.scopingLayout.setVisibility(View.GONE);
                 binding.todayFullLeaveLayout.setVisibility(View.GONE);
                 binding.backBtn.setVisibility(View.VISIBLE);
+                binding.tourCheck.setVisibility(View.GONE);
                 preferenceManager.putString(Constants.KEY_DATA_TYPE, "leave");
             }
         });
@@ -209,17 +205,6 @@ public class HomeActivity extends AppCompatActivity {
 
         binding.nameTitleView.setText(preferenceManager.getString(Constants.KEY_NAME));
 
-        binding.logOutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (Objects.equals(preferenceManager.getString(Constants.KEY_IS_SIGNED_IN), "yes")) {
-                    preferenceManager.putString(Constants.KEY_IS_SIGNED_IN, "no");
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                    finish();
-                }
-
-            }
-        });
 
         binding.submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,6 +216,10 @@ public class HomeActivity extends AppCompatActivity {
                             binding.secondHalfLayout.setError("field can't be empty!");
                         } else {
                             binding.secondHalfLayout.setError(null);
+                        }
+
+                        if (binding.tourCheck.isChecked()) {
+                            status = "t";
                         }
                         addWork();
                     } else if (Objects.equals(fetchedLeaveType, "second half")){
@@ -282,6 +271,7 @@ public class HomeActivity extends AppCompatActivity {
                 binding.secondHalfLayout.setVisibility(View.VISIBLE);
                 binding.scopingLayout.setVisibility(View.VISIBLE);
                 binding.backBtn.setVisibility(View.GONE);
+                binding.tourCheck.setVisibility(View.VISIBLE);
                 preferenceManager.putString(Constants.KEY_DATA_TYPE, "work");
 
                 fetchLeaves(formattedDate);
@@ -397,9 +387,17 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         if (!Objects.equals(firstHalfWork, "-") && !Objects.equals(secondHalfWork, "-")) {
-            status = "p";
+            if (binding.tourCheck.isChecked()) {
+                status = "t";
+            } else {
+                status = "p";
+            }
         } else {
-            status = "hp";
+            if (binding.tourCheck.isChecked()) {
+                status = "t";
+            } else {
+                status = "hp";
+            }
         }
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
