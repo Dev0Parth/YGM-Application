@@ -1,5 +1,6 @@
 package com.parth.ygm.utilities;
 
+import com.parth.ygm.models.CheckResponse;
 import com.parth.ygm.models.EmployeeData;
 import com.parth.ygm.models.LeaveCount;
 import com.parth.ygm.models.LeavesData;
@@ -19,48 +20,48 @@ public interface API {
     @FormUrlEncoded
     @POST("addWork.php")
     Call<ResponseBody> addWork(
-            @Field("empId") String empId,
-            @Field("fullName") String fullName,
-            @Field("department") String department,
-            @Field("date") String date,
-            @Field("status") String status,
-            @Field("firstHalfWork") String firstHalfWork,
-            @Field("secondHalfWork") String secondHalfWork,
-            @Field("scoping") String scoping,
-            @Field("createdAt") String createdAt
+            @Field("Emp_Code") String empId,
+            @Field("Name") String fullName,
+            @Field("Department") String department,
+            @Field("Date") String date,
+            @Field("Status") String status,
+            @Field("First_Half_Work") String firstHalfWork,
+            @Field("Second_Half_Work") String secondHalfWork,
+            @Field("Scoping") String scoping,
+            @Field("Created_At") String createdAt
     );
 
     @FormUrlEncoded
     @POST("addLeave.php")
     Call<ResponseBody> addLeave(
-            @Field("empId") String empId,
-            @Field("fullName") String fullName,
-            @Field("department") String department,
-            @Field("fromDate") String fromDate,
-            @Field("toDate") String toDate,
-            @Field("status") String status,
-            @Field("leaveType") String leaveType,
-            @Field("leaveReason") String leaveReason,
-            @Field("createdAt") String createdAt
+            @Field("Emp_Code") String empId,
+            @Field("Name") String fullName,
+            @Field("Department") String department,
+            @Field("From_Date") String fromDate,
+            @Field("To_Date") String toDate,
+            @Field("Status") String status,
+            @Field("Leave_Type") String leaveType,
+            @Field("Leave_Reason") String leaveReason,
+            @Field("Created_At") String createdAt
     );
 
     @FormUrlEncoded
     @POST("login.php")
     Call<User> login(
-            @Field("androidId") String androidId
+            @Field("Gsf_Id") String gsfID
     );
 
 
     @FormUrlEncoded
     @POST("checkLeave.php")
     Call<List<LeavesData>> fetchLeaves(
-            @Field("empId") String empId,
-            @Field("date") String date
+            @Field("Emp_Code") String empId,
+            @Field("Date") String date
     );
 
     @FormUrlEncoded
     @POST("countLeaves.php")
     Call<List<LeaveCount>> countLeaves(
-            @Field("empId") String empId
+            @Field("Emp_Code") String empId
     );
 }

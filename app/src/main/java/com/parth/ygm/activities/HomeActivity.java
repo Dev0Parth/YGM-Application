@@ -321,8 +321,9 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<LeavesData>> call, Response<List<LeavesData>> response) {
                 List<LeavesData> data = response.body();
-                if (data.get(0).getLeaveType() != null) {
-                    if (Objects.equals(data.get(0).getLeaveType(), "First Half")) {
+                if (data.get(0).getLeave_Type() != null) {
+                    Toast.makeText(HomeActivity.this, "done", Toast.LENGTH_SHORT).show();
+                    if (Objects.equals(data.get(0).getLeave_Type(), "First Half")) {
                         binding.firstHalfLayout.setVisibility(View.GONE);
                         binding.secondHalfLayout.setVisibility(View.VISIBLE);
                         binding.scopingLayout.setVisibility(View.VISIBLE);
@@ -330,14 +331,14 @@ public class HomeActivity extends AppCompatActivity {
                         fetchedLeaveType = "first half";
 
 
-                    } else if (Objects.equals(data.get(0).getLeaveType(), "Second Half")) {
+                    } else if (Objects.equals(data.get(0).getLeave_Type(), "Second Half")) {
                         binding.firstHalfLayout.setVisibility(View.VISIBLE);
                         binding.secondHalfLayout.setVisibility(View.GONE);
                         binding.scopingLayout.setVisibility(View.VISIBLE);
                         binding.todayFullLeaveLayout.setVisibility(View.GONE);
                         fetchedLeaveType = "second half";
 
-                    } else if (Objects.equals(data.get(0).getLeaveType(), "Full Leave")) {
+                    } else if (Objects.equals(data.get(0).getLeave_Type(), "Full Leave")) {
                         binding.firstHalfLayout.setVisibility(View.GONE);
                         binding.secondHalfLayout.setVisibility(View.GONE);
                         binding.scopingLayout.setVisibility(View.GONE);

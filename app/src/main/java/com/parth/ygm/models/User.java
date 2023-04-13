@@ -1,56 +1,64 @@
 package com.parth.ygm.models;
 
 public class User {
-    String empId, department, name, phone, created_At;
-
+    String Emp_Code, Department, Name, Contact_No, Gsf_Id, Created_At;
     public User() {
     }
 
-    public User(String empId, String department, String name, String phone, String created_At) {
-        this.empId = empId;
-        this.department = department;
-        this.name = name;
-        this.phone = phone;
-        this.created_At = created_At;
+    public User(String Emp_Code, String Department, String Name, String Contact_No, String Gsf_Id, String Created_At) {
+        this.Emp_Code = Emp_Code;
+        this.Department = Department;
+        this.Name = Name;
+        this.Contact_No = Contact_No;
+        this.Gsf_Id = Gsf_Id;
+        this.Created_At = Created_At;
     }
 
-    public String getEmpId() {
-        return empId;
-    }
-
-    public void setEmpId(String empId) {
-        this.empId = empId;
+    public String getEmp_Code() {
+        return Emp_Code;
     }
 
     public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
+        return Department;
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getContact_No() {
+        return Contact_No;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public String getGsf_Id() {
+        return Gsf_Id;
     }
 
     public String getCreated_At() {
-        return created_At;
+        return Created_At;
     }
 
-    public void setCreated_At(String created_At) {
-        this.created_At = created_At;
+    public void setEmp_Code(String Emp_Code) {
+        this.Emp_Code = Emp_Code;
+    }
+
+    public void setDepartment(String Department) {
+        this.Department = Department;
+    }
+
+    public void setName(String Name) {
+        this.Name = Name;
+    }
+
+    public void setContact_No(String Contact_No) {
+        this.Contact_No = Contact_No;
+    }
+
+    public void setGsf_Id(String Gsf_Id) {
+        this.Gsf_Id = Gsf_Id;
+    }
+
+    public void setCreated_At(String Created_At) {
+        this.Created_At = Created_At;
     }
 }

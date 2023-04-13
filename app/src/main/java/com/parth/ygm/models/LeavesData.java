@@ -1,86 +1,86 @@
 package com.parth.ygm.models;
 
 public class LeavesData {
-    String empId, department, fullName, fromDate, toDate, leaveType, leaveReason, createdAt, half_leaves, full_leaves;
+    String Emp_Id, Department, Name, From_Date, To_Date, Leave_Type, Leave_Reason, Created_At, half_leaves, full_leaves;
 
     public LeavesData() {
     }
 
-    public LeavesData(String empId, String department, String fullName, String fromDate, String toDate, String leaveType, String leaveReason, String createdAt, String half_leaves, String full_leaves) {
-        this.empId = empId;
-        this.department = department;
-        this.fullName = fullName;
-        this.fromDate = fromDate;
-        this.toDate = toDate;
-        this.leaveType = leaveType;
-        this.leaveReason = leaveReason;
-        this.createdAt = createdAt;
+    public LeavesData(String Emp_Id, String Department, String Name, String From_Date, String To_Date, String Leave_Type, String Leave_Reason, String Created_At, String half_leaves, String full_leaves) {
+        this.Emp_Id = Emp_Id;
+        this.Department = Department;
+        this.Name = Name;
+        this.From_Date = From_Date;
+        this.To_Date = To_Date;
+        this.Leave_Type = Leave_Type;
+        this.Leave_Reason = Leave_Reason;
+        this.Created_At = Created_At;
         this.half_leaves = half_leaves;
         this.full_leaves = full_leaves;
     }
 
-    public String getEmpId() {
-        return empId;
+    public String getEmp_Id() {
+        return Emp_Id;
     }
 
-    public void setEmpId(String empId) {
-        this.empId = empId;
+    public void setEmp_Id(String Emp_Id) {
+        this.Emp_Id = Emp_Id;
     }
 
     public String getDepartment() {
-        return department;
+        return Department;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setDepartment(String Department) {
+        this.Department = Department;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getName() {
+        return Name;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setName(String Name) {
+        this.Name = Name;
     }
 
-    public String getFromDate() {
-        return fromDate;
+    public String getFrom_Date() {
+        return From_Date;
     }
 
-    public void setFromDate(String fromDate) {
-        this.fromDate = fromDate;
+    public void setFrom_Date(String From_Date) {
+        this.From_Date = From_Date;
     }
 
-    public String getToDate() {
-        return toDate;
+    public String getTo_Date() {
+        return To_Date;
     }
 
-    public void setToDate(String toDate) {
-        this.toDate = toDate;
+    public void setTo_Date(String To_Date) {
+        this.To_Date = To_Date;
     }
 
-    public String getLeaveType() {
-        return leaveType;
+    public String getLeave_Type() {
+        return Leave_Type;
     }
 
-    public void setLeaveType(String leaveType) {
-        this.leaveType = leaveType;
+    public void setLeave_Type(String Leave_Type) {
+        this.Leave_Type = Leave_Type;
     }
 
-    public String getLeaveReason() {
-        return leaveReason;
+    public String getLeave_Reason() {
+        return Leave_Reason;
     }
 
-    public void setLeaveReason(String leaveReason) {
-        this.leaveReason = leaveReason;
+    public void setLeave_Reason(String Leave_Reason) {
+        this.Leave_Reason = Leave_Reason;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public String getCreated_At() {
+        return Created_At;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setCreated_At(String Created_At) {
+        this.Created_At = Created_At;
     }
 
     public String getHalf_leaves() {
