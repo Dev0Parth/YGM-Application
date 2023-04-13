@@ -66,7 +66,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             // Check if the READ_PHONE_STATE permission is granted
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted, start the AsyncTask to retrieve the GSF ID
-                GetGSFIdTask task = new GetGSFIdTask();
+                GetGAIdTask task = new GetGAIdTask();
                 task.execute();
             } else {
                 // Permission is not granted, request it from the user
@@ -83,7 +83,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_READ_PHONE_STATE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted, start the AsyncTask to retrieve the GSF ID
-                GetGSFIdTask task = new GetGSFIdTask();
+                GetGAIdTask task = new GetGAIdTask();
                 task.execute();
             } else {
                 // Permission is not granted, show a message or request the permission again
@@ -93,33 +93,33 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private class GetGSFIdTask extends AsyncTask<Void, Void, String> {
+    private class GetGAIdTask extends AsyncTask<Void, Void, String> {
 
         @Override
         protected String doInBackground(Void... voids) {
-            String gsfID = null;
+            String ga_ID = null;
             GoogleApiAvailability api = GoogleApiAvailability.getInstance();
             int result = api.isGooglePlayServicesAvailable(SplashScreenActivity.this);
             if (result == ConnectionResult.SUCCESS) {
                 try {
                     AdvertisingIdClient.Info info = AdvertisingIdClient.getAdvertisingIdInfo(SplashScreenActivity.this);
-                    gsfID = info.getId();
+                    ga_ID = info.getId();
                 } catch (IOException | GooglePlayServicesNotAvailableException |
                          GooglePlayServicesRepairableException e) {
                     e.printStackTrace();
                 }
             }
-            return gsfID;
+            return ga_ID;
         }
 
         @Override
-        protected void onPostExecute(String gsfID) {
-            if (gsfID != null) {
+        protected void onPostExecute(String ga_ID) {
+            if (ga_ID != null) {
 
                 Call<User> call = RetrofitClient
                         .getInstance()
                         .getAPI()
-                        .login(gsfID);
+                        .login(ga_ID);
 
                 call.enqueue(new Callback<User>() {
                     @Override
@@ -134,14 +134,14 @@ public class SplashScreenActivity extends AppCompatActivity {
                                 String empId = user.getEmp_Code();
                                 String department = user.getDepartment();
                                 String phone = user.getContact_No();
-                                String gsfID = user.getGsf_Id();
+                                String gaID = user.getGa_Id();
                                 String createdAt = user.getCreated_At();
 
                                 preferenceManager.putString(Constants.KEY_NAME, name);
                                 preferenceManager.putString(Constants.KEY_EMPID, empId);
                                 preferenceManager.putString(Constants.KEY_DEPARTMENT, department);
                                 preferenceManager.putString(Constants.KEY_PHONE, phone);
-                                preferenceManager.putString(Constants.KEY_GSFID, gsfID);
+                                preferenceManager.putString(Constants.KEY_GSFID, gaID);
                                 preferenceManager.putString(Constants.KEY_CREATEDAT, createdAt);
 
                                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));

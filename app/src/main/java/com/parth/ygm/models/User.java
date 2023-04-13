@@ -1,16 +1,16 @@
 package com.parth.ygm.models;
 
 public class User {
-    String Emp_Code, Department, Name, Contact_No, Gsf_Id, Created_At;
+    String Emp_Code, Department, Name, Contact_No, Ga_Id, Created_At;
     public User() {
     }
 
-    public User(String Emp_Code, String Department, String Name, String Contact_No, String Gsf_Id, String Created_At) {
+    public User(String Emp_Code, String Department, String Name, String Contact_No, String Ga_Id, String Created_At) {
         this.Emp_Code = Emp_Code;
         this.Department = Department;
         this.Name = Name;
         this.Contact_No = Contact_No;
-        this.Gsf_Id = Gsf_Id;
+        this.Ga_Id = Ga_Id;
         this.Created_At = Created_At;
     }
 
@@ -30,8 +30,8 @@ public class User {
         return Contact_No;
     }
 
-    public String getGsf_Id() {
-        return Gsf_Id;
+    public String getGa_Id() {
+        return Ga_Id;
     }
 
     public String getCreated_At() {
@@ -54,8 +54,8 @@ public class User {
         this.Contact_No = Contact_No;
     }
 
-    public void setGsf_Id(String Gsf_Id) {
-        this.Gsf_Id = Gsf_Id;
+    public void setGa_Id(String Gsf_Id) {
+        this.Ga_Id = Gsf_Id;
     }
 
     public void setCreated_At(String Created_At) {

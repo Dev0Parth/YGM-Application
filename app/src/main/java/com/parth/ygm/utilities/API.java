@@ -48,7 +48,7 @@ public interface API {
     @FormUrlEncoded
     @POST("login.php")
     Call<User> login(
-            @Field("Gsf_Id") String gsfID
+            @Field("Ga_Id") String ga_ID
     );
 
 

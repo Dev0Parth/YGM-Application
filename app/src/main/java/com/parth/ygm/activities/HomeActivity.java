@@ -322,7 +322,6 @@ public class HomeActivity extends AppCompatActivity {
             public void onResponse(Call<List<LeavesData>> call, Response<List<LeavesData>> response) {
                 List<LeavesData> data = response.body();
                 if (data.get(0).getLeave_Type() != null) {
-                    Toast.makeText(HomeActivity.this, "done", Toast.LENGTH_SHORT).show();
                     if (Objects.equals(data.get(0).getLeave_Type(), "First Half")) {
                         binding.firstHalfLayout.setVisibility(View.GONE);
                         binding.secondHalfLayout.setVisibility(View.VISIBLE);
