@@ -34,6 +34,7 @@ import com.parth.ygm.utilities.PreferenceManager;
 import com.parth.ygm.utilities.RetrofitClient;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -63,14 +64,19 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         new Handler().postDelayed(() -> {
 
-            // Check if the READ_PHONE_STATE permission is granted
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-                // Permission is granted, start the AsyncTask to retrieve the GSF ID
-                GetGAIdTask task = new GetGAIdTask();
-                task.execute();
+            if (Objects.equals(preferenceManager.getString(Constants.IS_SIGNED_IN), "yes")) {
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                finish();
             } else {
-                // Permission is not granted, request it from the user
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_CODE_READ_PHONE_STATE);
+                // Check if the READ_PHONE_STATE permission is granted
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+                    // Permission is granted, start the AsyncTask to retrieve the GSF ID
+                    GetGAIdTask task = new GetGAIdTask();
+                    task.execute();
+                } else {
+                    // Permission is not granted, request it from the user
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_CODE_READ_PHONE_STATE);
+                }
             }
 
         }, 3000);
@@ -143,6 +149,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                                 preferenceManager.putString(Constants.KEY_PHONE, phone);
                                 preferenceManager.putString(Constants.KEY_GSFID, gaID);
                                 preferenceManager.putString(Constants.KEY_CREATEDAT, createdAt);
+                                preferenceManager.putString(Constants.IS_SIGNED_IN, "yes");
 
                                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                                 finish();
@@ -165,55 +172,5 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         }
     }
-
-
-//    @SuppressLint("HardwareIds")
-//    private String getICCID() {
-//        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-//        return telephonyManager.getSimSerialNumber();
-//    }
-//
-//
-//    private void autoLogin(String ICCID) {
-//
-//        Call<User> call = RetrofitClient
-//                .getInstance()
-//                .getAPI()
-//                .login(ICCID);
-//
-//        call.enqueue(new Callback<User>() {
-//            @Override
-//            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
-//
-//                if (response.isSuccessful()) {
-//                    User user = response.body();
-//
-//                    String name = user.getName();
-//                    if (name != null) {
-//                        String empId = user.getEmpId();
-//                        String department = user.getDepartment();
-//
-//                        preferenceManager.putString(Constants.KEY_NAME, name);
-//                        preferenceManager.putString(Constants.KEY_EMPID, empId);
-//                        preferenceManager.putString(Constants.KEY_DEPARTMENT, department);
-//
-//                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-//                        finish();
-//                    } else {
-//                        Toast.makeText(SplashScreenActivity.this, "User not found!", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                } else {
-//                    Toast.makeText(SplashScreenActivity.this, "Error occurred, please try again later!", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<User> call, Throwable t) {
-//                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//    }
 
 }
