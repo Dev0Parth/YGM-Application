@@ -372,18 +372,19 @@ public class HomeActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(binding.firstHalfWorkEditText.getText().toString())) {
             firstHalfWork = "-";
         } else {
-            firstHalfWork = binding.firstHalfWorkEditText.getText().toString();
+
+            firstHalfWork = toTitleCase(binding.firstHalfWorkEditText.getText().toString().trim());
         }
         if (TextUtils.isEmpty(binding.secondHalfWorkEditText.getText().toString())) {
             secondHalfWork = "-";
         } else {
-            secondHalfWork = binding.secondHalfWorkEditText.getText().toString();
+            secondHalfWork = toTitleCase(binding.secondHalfWorkEditText.getText().toString().trim());
         }
 
         if (TextUtils.isEmpty(binding.scopingEditText.getText().toString())) {
             scoping = null;
         } else {
-            scoping = binding.scopingEditText.getText().toString();
+            scoping = toTitleCase(binding.scopingEditText.getText().toString().trim());
         }
 
         if (!Objects.equals(firstHalfWork, "-") && !Objects.equals(secondHalfWork, "-")) {
@@ -457,7 +458,7 @@ public class HomeActivity extends AppCompatActivity {
         empId = preferenceManager.getString(Constants.KEY_EMPID);
         fromDate = binding.fromDateEditText.getText().toString();
         toDate = binding.toDateEditText.getText().toString();
-        leaveReason = binding.reasonEditText.getText().toString();
+        leaveReason = toTitleCase(binding.reasonEditText.getText().toString().trim());
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             LocalDateTime localDateTime = LocalDateTime.now();
@@ -517,6 +518,27 @@ public class HomeActivity extends AppCompatActivity {
             finish();
         }, 2000);
 
+    }
+
+    public static String toTitleCase(String input) {
+        String output = "";
+
+        boolean capitalizeNext = true;
+
+        for (char c : input.toCharArray()) {
+            if (Character.isWhitespace(c)) {
+                capitalizeNext = true;
+            } else if (capitalizeNext) {
+                c = Character.toUpperCase(c);
+                capitalizeNext = false;
+            } else {
+                c = Character.toLowerCase(c);
+            }
+
+            output += c;
+        }
+
+        return output;
     }
 
 
